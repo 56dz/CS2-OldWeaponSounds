@@ -239,3 +239,56 @@ python3 tools/gen_config.py verified_map.json items_game.txt config.json
 - 本 addon **不附带任何音频文件**，只重新指向客户端已有的资源
 - 音效资产版权归 Valve；本项目仅修改 soundevent 的引用关系，供社区服务器使用
 - 仅供社区服务器；官方匹配不加载第三方 Metamod 插件
+
+---
+
+## 八、重要更新（2026-10-13）
+
+### 1. addon 文件结构已修正 ⚠️
+
+初版 `soundevents_addon.vsndevts` 有两个**致命结构错误**，会导致 addon 完全不生效：
+
+| 问题 | 初版（错误） | 修正后 |
+|------|-------------|--------|
+| 缺少 kv3 头 | 无 | `<!-- kv3 encoding:text:version{...} format:generic:version{...} -->` |
+| 根块 | `soundevents_addon = { ... }` | **匿名** `{ ... }` |
+
+现在的文件用 **CS2 真实的 `game_sounds_weapons.vsndevts` 逐字段重建**，
+只替换 `vsnd_files_track_01`，因此 `distance_volume_mapping_curve`、`occlusion_intensity`、
+`position_offset`、`broadcast_distance_override` 等**全部 3D/衰减/遮挡字段都保持原样**。
+
+生成脚本：`tools/build_faithful_addon.js`
+（需要 CS2 soundevents 的反编译转储作为输入，见下）
+
+```bash
+curl -sL https://raw.githubusercontent.com/Vauff/cs2_dumps/main/soundevents/game_sounds_weapons.vsndevts -o gsw.txt
+node tools/build_faithful_addon.js gsw.txt docs/verified_map.json addon/soundevents/soundevents_addon.vsndevts
+```
+
+### 2. MultiAddonManager 在 Debian 12 上无法加载 🔴
+
+服务器实测：
+
+```
+[META] Failed to load plugin addons/multiaddonmanager/bin/multiaddonmanager:
+/lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found
+```
+
+| 项目 | 值 |
+|------|-----|
+| 服务器系统 | Debian 12 (bookworm)，glibc **2.36** |
+| MultiAddonManager 要求 | 最高 **GLIBC_2.38** |
+
+即该 `.so` 是用更新发行版编译的，**在 Debian 12 上根本加载不了**，
+所以仅配置 `multiaddonmanager.cfg` 不会生效。解决方向：
+
+1. 换用**较老的、在旧发行版上编译的** MultiAddonManager 版本（要求 glibc ≤ 2.36）
+2. 或把服务器升级到 Debian 13（glibc 2.41）
+3. 或改用 CS2 原生的 workshop collection 机制（`+host_workshop_collection`）
+
+### 3. 一个需要留意的点：部分武器可能本来就没变
+
+CS2 的 `Weapon_XXX.Single` 若**本来**就指向那个同名旧文件（很多武器如此），
+则覆盖是"无操作"——因为 CS2 根本没改这些枪的声音。
+真正需要覆盖的是 **CS2 换了音频引用的那些**（如 AK47：原版指向 `ak47_01/02/04.vsnd`，
+而旧的 `ak47-1.vsnd` 未被引用）。

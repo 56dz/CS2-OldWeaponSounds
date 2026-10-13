@@ -1,331 +1,4511 @@
-// CS2 旧版（CS:GO）枪声覆盖 —— 由自动化脚本生成
-// 原理：把原版 soundevent 重新指向 CS2 客户端中已存在的 CS:GO 原版 .vsnd 文件
-//      这些文件已随 CS2 分发（PCM 与 CS:GO 逐字节一致），因此本 addon 无需附带任何音频文件
-// 放置位置：<addon>/soundevents/soundevents_addon.vsndevts
-
-soundevents_addon =
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-
-	Weapon_AK47.Single =
+	Weapon_AK47.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.100000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000350,
+				-0.000350,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.014706,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/ak47/ak47-1.vsnd",
 		]
-		metadata = [ "meta", "rifle", ]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_AK47.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"rifle",
+		]
+		vsnd_duration = 2.445578
 	}
-
-	Weapon_AUG.Single =
+	Weapon_AUG.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		volume = 0.900000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000350,
+				-0.000350,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.014706,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/aug/aug_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_AUG.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"rifle",
+		]
+		vsnd_duration = 2.563878
 	}
-
-	Weapon_AWP.Single =
+	Weapon_AWP.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.400000
+		preload_vsnds = true
+		volume = 1.000000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.300000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 0.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		reverb_source_wet = 0.000000
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 0.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_time_unfiltered_stereo_mapping_curve = true
+		use_baked_occlusion = true
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/awp/awp_01.vsnd",
 		]
-		metadata = [ "meta", "sniper_rifle", ]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.001002,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000291,
+				-0.000291,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2800.000000,
+				0.047794,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_AWP.SingleDistant"
+		time_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.542857,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				1.928571,
+				1.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"bolt action",
+		]
+		vsnd_duration = 4.129047
 	}
-
-	Weapon_CZ75A.Single =
+	Weapon_CZ75A.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000352,
+				-0.000352,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.011029,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/cz75a/cz75_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_CZ75A.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 1.704581
 	}
-
-	Weapon_DEagle.Single =
+	Weapon_DEagle.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000350,
+				-0.000350,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.014706,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/deagle/deagle_01.vsnd",
 		]
-		metadata = [ "meta", "pistol", ]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_DEagle.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 3.080227
 	}
-
-	Weapon_ELITE.Single =
+	Weapon_ELITE.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.100000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000346,
+				-0.000346,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.022059,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/elite/elites_01.vsnd",
 		]
-	}
-
-	Weapon_FiveSeven.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		fadetime_volume_mapping_curve = 
 		[
-			"sounds/weapons/fiveseven/fiveseven_01.vsnd",
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
 		]
+		soundevent_01 = "Weapon_ELITE.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 3.375011
 	}
-
-	Weapon_G3SG1.Single =
+	Weapon_FiveSeven.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		pitch_random_min = -0.010000
+		pitch_random_max = 0.010000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000352,
+				-0.000352,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.011029,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/fiveseven/fiveseven_01.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_FiveSeven.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 1.604331
+	}
+	Weapon_G3SG1.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 1.000000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000352,
+				-0.000352,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.011029,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/g3sg1/g3sg1_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_G3SG1.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"rifle",
+		]
+		vsnd_duration = 2.669274
 	}
-
-	Weapon_M249.Single =
+	Weapon_M249.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 1.700000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = 0.000000
+		pitch_random_max = 0.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.000000,
+				0.000000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				0.800000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				175.714279,
+				0.800000,
+				-0.001065,
+				-0.001065,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				1157.142822,
+				0.290441,
+				-0.000339,
+				-0.000339,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				2500.000000,
+				0.011029,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/m249/m249-1.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = 
+		[
+			"Weapon_M249.SingleDistant",
+			"Weapon_M249.Jangle",
+		]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"machine gun",
+		]
+		vsnd_duration = 1.652698
 	}
-
-	Weapon_M4A1.Single =
+	Weapon_M4A1.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.100000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		use_distance_volume_mapping_curve = true
+		block_duration = 0.000000
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		display_broadcast = true
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		block_distance = 0.000000
+		use_fadetime_volume_mapping_curve = false
+		restrict_source_reverb = false
+		enable_child_events = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000348,
+				-0.000348,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.018382,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/m4a1/m4a1_01.vsnd",
 		]
-		metadata = [ "meta", "rifle", ]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		soundevent_01 = "Weapon_M4A1.SingleDistant"
+		metadata = 
+		[
+			"meta",
+			"rifle",
+		]
+		vsnd_duration = 3.191995
 	}
-
-	Weapon_MAC10.Single =
+	Weapon_MAC10.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.650000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/mac10/mac10_01.vsnd",
 		]
-	}
-
-	Weapon_MP5.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		fadetime_volume_mapping_curve = 
 		[
-			"sounds/weapons/mp5/mp5_01.vsnd",
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
 		]
+		soundevent_01 = "Weapon_MAC10.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 2.000000
 	}
-
-	Weapon_MP7.Single =
+	Weapon_MP5.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = false
+		reverb_wet = 0.200000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		reverb_source_wet = 0.200000
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001439,
+				0.001439,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				164.000000,
+				1.000000,
+				-0.000949,
+				-0.000958,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				428.000000,
+				0.618557,
+				-0.001208,
+				-0.001208,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				804.000000,
+				0.226804,
+				-0.000652,
+				-0.000652,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1300.000000,
+				0.050000,
+				-0.000381,
+				-0.000381,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1400.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/mp5/mp5_01.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = ""
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-10082.461914,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				35.108589,
+				0.000000,
+				-10082.461914,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun silenced",
+		]
+		vsnd_duration = 1.414717
+	}
+	Weapon_MP7.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 1.000000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000346,
+				-0.000346,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.022059,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/mp7/mp7_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_MP7.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 2.640839
 	}
-
-	Weapon_MP9.Single =
+	Weapon_MP9.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.750000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000348,
+				-0.000348,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.018382,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/mp9/mp9_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_MP9.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 1.695215
 	}
-
-	Weapon_Mag7.Single =
+	Weapon_Mag7.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/mag7/mag7_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_Mag7.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"shotgun",
+		]
+		vsnd_duration = 3.000000
 	}
-
-	Weapon_Negev.Single =
+	Weapon_Negev.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = 0.000000
+		pitch_random_max = 0.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/negev/negev_01.vsnd",
 		]
-	}
-
-	Weapon_Nova.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		fadetime_volume_mapping_curve = 
 		[
-			"sounds/weapons/nova/nova-1.vsnd",
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
 		]
-	}
-
-	Weapon_P250.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		soundevent_01 = "Weapon_Negev.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
 		[
-			"sounds/weapons/p250/p250_01.vsnd",
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
 		]
+		metadata = 
+		[
+			"meta",
+			"machine gun",
+		]
+		vsnd_duration = 4.214512
 	}
-
-	Weapon_P90.Single =
+	Weapon_Nova.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 0.500000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000686,
+				-0.000686,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1178.571411,
+				0.312500,
+				-0.000424,
+				-0.000424,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2150.000000,
+				0.011029,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/nova/nova-1.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_Nova.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"shotgun",
+		]
+		vsnd_duration = 2.852698
+	}
+	Weapon_P250.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		pitch_random_min = -0.020000
+		pitch_random_max = 0.020000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/p250/p250_01.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_P250.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 1.842562
+	}
+	Weapon_P90.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 0.300000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 0.300000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/p90/p90_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_P90.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 1.619252
 	}
-
-	Weapon_SCAR20.Single =
+	Weapon_PartyHorn.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.600000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/party_horn_01.vsnd"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-10082.461914,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				35.108589,
+				0.000000,
+				-10082.461914,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"",
+		]
+		vsnd_duration = 4.707778
+	}
+	Weapon_SCAR20.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 1.000000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000350,
+				-0.000350,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.014706,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/scar20/scar20_01.vsnd",
 		]
-	}
-
-	Weapon_SSG08.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		fadetime_volume_mapping_curve = 
 		[
-			"sounds/weapons/ssg08/ssg08_01.vsnd",
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
 		]
-	}
-
-	Weapon_Sawedoff.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		soundevent_01 = "Weapon_SCAR20.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
 		[
-			"sounds/weapons/sawedoff/sawedoff-1.vsnd",
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
 		]
-	}
-
-	Weapon_Taser.Single =
-	{
-		type = "csgo_mega"
-		volume = 1.000000
-		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		metadata = 
 		[
-			"sounds/weapons/taser/taser_shoot.vsnd",
+			"meta",
+			"rifle",
 		]
+		vsnd_duration = 3.250000
 	}
-
-	Weapon_UMP45.Single =
+	Weapon_SSG08.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
 		[
-			"sounds/weapons/ump45/ump45_02.vsnd",
+			0.000000,
+			0.000000,
+			60.000000,
 		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000429,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				578.571411,
+				0.764706,
+				-0.000523,
+				-0.000523,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1342.857178,
+				0.389706,
+				-0.000381,
+				-0.000381,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.033088,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/ssg08/ssg08_01.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_SSG08.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"bolt action",
+		]
+		vsnd_duration = 2.250000
 	}
-
-	Weapon_USP.Single =
+	Weapon_Sawedoff.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.100000
+		block_distance = 20.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = true
+		block_match_entity = true
+		distance_effect_mix = 0.500000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/sawedoff/sawedoff-1.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_Sawedoff.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"shotgun",
+		]
+		vsnd_duration = 2.796871
+	}
+	Weapon_Taser.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 0.350000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		enable_child_events = true
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.001100,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				847.714294,
+				0.261029,
+				-0.000446,
+				-0.000446,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2420.285645,
+				0.000000,
+				-0.000166,
+				-0.000166,
+				1.000000,
+				1.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/taser/taser_shoot.vsnd"
+		soundevent_01 = "Weapon_Taser.Charging"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 1.459206
+	}
+	Weapon_UMP45.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		enable_child_events = true
+		reverb_wet = 0.800000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 0.800000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/ump45/ump45_02.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = "Weapon_UMP45.SingleDistant"
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 2.089751
+	}
+	Weapon_USP.Single = 
+	{
+		type = "csgo_mega"
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
+		mixgroup = "Weapons"
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/usp/usp_unsilenced_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		soundevent_01 = ""
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 2.307483
 	}
-
-	Weapon_bizon.Single =
+	Weapon_bizon.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 0.500000
+		occlusion_intensity = 0.600000
+		enable_child_events = true
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.030000
+		pitch_random_max = 0.030000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000357,
+				-0.000357,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.000000,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/bizon/bizon_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		soundevent_01 = "Weapon_bizon.SingleDistant"
+		metadata = 
+		[
+			"meta",
+			"submachine gun",
+		]
+		vsnd_duration = 1.523016
 	}
-
-	Weapon_hkp2000.Single =
+	Weapon_hkp2000.Single = 
 	{
 		type = "csgo_mega"
+		preload_vsnds = true
 		volume = 1.000000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		enable_child_events = true
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		pitch_random_min = -0.050000
+		pitch_random_max = 0.050000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		delay = 0.010000
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000346,
+				-0.000346,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.022059,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/hkp2000/hkp2000_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		soundevent_01 = "Weapon_hkp2000.SingleDistant"
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 2.250000
 	}
-
-	Weapon_sg556.Single =
+	Weapon_sg556.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.900000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		enable_child_events = true
+		position_offset = 
+		[
+			0.000000,
+			0.000000,
+			60.000000,
+		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		pitch_random_min = -0.040000
+		pitch_random_max = 0.040000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000344,
+				-0.000344,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.025735,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = 
 		[
 			"sounds/weapons/sg556/sg556_01.vsnd",
 		]
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		soundevent_01 = "Weapon_sg556.SingleDistant"
+		metadata = 
+		[
+			"meta",
+			"rifle",
+		]
+		vsnd_duration = 3.579161
 	}
-
-	Weapon_tec9.Single =
+	Weapon_tec9.Single = 
 	{
 		type = "csgo_mega"
-		volume = 1.000000
+		preload_vsnds = true
+		volume = 0.800000
+		pitch = 1.000000
 		mixgroup = "Weapons"
-		vsnd_files_track_01 =
+		block_duration = 0.000000
+		block_distance = 0.000000
+		use_distance_volume_mapping_curve = true
+		use_distance_unfiltered_stereo_mapping_curve = true
+		reverb_wet = 1.000000
+		occlusion_intensity = 0.600000
+		enable_child_events = true
+		position_offset = 
 		[
-			"sounds/weapons/tec9/tec9_02.vsnd",
+			0.000000,
+			0.000000,
+			60.000000,
 		]
+		use_fadetime_volume_mapping_curve = false
+		display_broadcast = true
+		instance_limit = 1.000000
+		broadcast_distance_override = 9000.000000
+		pitch_random_min = -0.050000
+		pitch_random_max = 0.050000
+		reverb_source_wet = 1.000000
+		block_matching_events = false
+		block_match_entity = false
+		distance_effect_mix = 1.000000
+		restrict_source_reverb = false
+		occlusion_frequency_scale = 1.000000
+		use_baked_occlusion = true
+		distance_volume_mapping_curve = 
+		[
+			
+			[
+				25.000000,
+				0.800000,
+				0.040000,
+				0.040000,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				30.000000,
+				1.000000,
+				0.001327,
+				0.001327,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				175.714279,
+				1.000000,
+				-0.000949,
+				-0.000646,
+				2.000000,
+				1.000000,
+			],
+			
+			[
+				440.000000,
+				0.735294,
+				-0.000602,
+				-0.000602,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				1288.000000,
+				0.330882,
+				-0.000346,
+				-0.000346,
+				1.000000,
+				1.000000,
+			],
+			
+			[
+				2500.000000,
+				0.022059,
+				-0.000156,
+				-0.000156,
+				2.000000,
+				3.000000,
+			],
+		]
+		vsnd_files_track_01 = "sounds/weapons/tec9/tec9_02.vsnd"
+		fadetime_volume_mapping_curve = 
+		[
+			
+			[
+				0.000000,
+				1.000000,
+				-1.139103,
+				-1.139103,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				0.100000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+		]
+		distance_unfiltered_stereo_mapping_curve = 
+		[
+			
+			[
+				35.108490,
+				1.000000,
+				0.000000,
+				-0.003775,
+				0.000000,
+				0.000000,
+			],
+			
+			[
+				300.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				2.000000,
+				3.000000,
+			],
+			
+			[
+				300.000092,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+				0.000000,
+			],
+		]
+		soundevent_01 = "Weapon_tec9.SingleDistant"
+		metadata = 
+		[
+			"meta",
+			"pistol",
+		]
+		vsnd_duration = 2.532721
 	}
 }
