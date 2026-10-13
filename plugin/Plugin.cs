@@ -1,3 +1,22 @@
+// OldWeaponSounds —— CS2 每武器枪声开关（配合 soundevents addon）
+//
+// 背景：
+//   addon(soundevents/soundevents_addon.vsndevts) 把 Weapon_XXX.Single 覆盖成 CS:GO 旧音，
+//   所以**默认所有玩家听到的都是 CS:GO 旧音**。本插件只负责"把某些武器还原成 CS2 原声"。
+//
+// 语义：
+//   总开关 enabled=false        -> 插件完全不干预（全部武器都是 addon 的旧音）
+//   武器 enabled=true  (默认)   -> 插件什么都不做，原版开火音效消息照常发出 -> 客户端播 addon 的旧音
+//   武器 enabled=false          -> 插件拦下该武器的原版开火音效消息(452)，
+//                                  先播放 Orig_Weapon_XXX.Single(内容=CS2 原事件)，拿到非 0 guid 才屏蔽原版
+//                                  —— 任何一步失败都保留原版消息，绝不出现"无声枪"
+//
+// 命令：
+//   css_oldws status                    查看状态
+//   css_oldws <item_def_index> on|off   开/关某把武器的 CS:GO 旧音（off = 还原 CS2 原声）
+//   css_oldws reload                    重新读取 config.json
+//   css_oldws list                      列出所有关闭（还原成 CS2 原声）的武器
+
 using System.Text;
 using System.Text.Json;
 using CounterStrikeSharp.API;
@@ -11,49 +30,94 @@ namespace OldWeaponSounds;
 
 public class WeaponCfg
 {
+    /// <summary>显示名（仅用于日志/命令输出）。</summary>
     public string name { get; set; } = "";
+
+    /// <summary>items_game.txt 里的武器类名，如 weapon_ak47。用于 weapon_fire 事件关联。</summary>
     public string weapon_name { get; set; } = "";
-    public string vsnd { get; set; } = "";
-    public string soundevent { get; set; } = "";
-    public float volume { get; set; } = 1.0f;
+
+    /// <summary>物品定义索引（= config 里的 key）。PartyHorn 没有该索引，为 null。</summary>
+    public int? item_def_index { get; set; }
+
+    /// <summary>addon 覆盖后指向 CS:GO 旧音的事件名。</summary>
+    public string legacy_event { get; set; } = "";
+
+    /// <summary>addon 里内容与 CS2 原事件完全一致的事件名，用于还原 CS2 原声。</summary>
+    public string orig_event { get; set; } = "";
+
+    /// <summary>true = 保持 CS:GO 旧音（插件不干预）；false = 还原成 CS2 原声。</summary>
+    public bool enabled { get; set; } = true;
 }
 
 public class RootCfg
 {
-    /// <summary>总开关。false 时插件完全不干预（原版音效照常）。</summary>
-    public bool enabled { get; set; } = false;
+    /// <summary>插件总开关。false 时完全不干预任何音效。</summary>
+    public bool enabled { get; set; } = true;
 
-    /// <summary>
-    /// 替换方式：
-    ///   none       = 只诊断，不改动任何音效（默认，最安全）
-    ///   soundevent = 播放 soundevent（需配合 addon 覆盖，方位/衰减正确；推荐）
-    ///   vsnd       = 直接播 .vsnd 路径（无需 addon，但可能丢失 3D 定位）
-    /// </summary>
-    public string replaceMode { get; set; } = "none";
-
-    /// <summary>是否在替换成功后屏蔽原版开火音（避免双重音）。</summary>
-    public bool suppressVanilla { get; set; } = true;
-
-    /// <summary>诊断日志（首次调试建议 true）。</summary>
+    /// <summary>诊断日志。</summary>
     public bool debug { get; set; } = true;
 
+    /// <summary>按 item_def_index 索引的武器表。</summary>
     public Dictionary<string, WeaponCfg> weapons { get; set; } = new();
 }
 
 public class OldWeaponSoundsPlugin : BasePlugin
 {
     public override string ModuleName => "OldWeaponSounds";
-    public override string ModuleVersion => "1.0.0";
+    public override string ModuleVersion => "2.0.0";
     public override string ModuleAuthor => "dsh";
-    public override string ModuleDescription => "将武器开火音效替换为 CS:GO 旧版音效";
+    public override string ModuleDescription => "CS:GO 旧版枪声 addon 的每武器开关（把指定武器还原成 CS2 原声）";
+
+    /// <summary>武器开火音效 usermessage（fields: weapon_id / sound_type / item_def_index）。</summary>
+    private const int MsgWeaponFireSound = 452;
+
+    /// <summary>原始诊断日志条数上限，避免刷爆日志。</summary>
+    private const int MaxRawDiagnostics = 300;
+
+    /// <summary>日志超过该字节数时在加载阶段归档。</summary>
+    private const long MaxLogBytes = 2 * 1024 * 1024;
 
     private static readonly object FileLock = new();
-    private static string _logPath;
-    private RootCfg _cfg = new();
-    private string _cfgPath;
+    private static string _logPath = "";
 
-    /// <summary>已记录但尚未匹配到音效消息的开火（用于关联 452 与开火玩家）。</summary>
-    private readonly List<(int defIndex, CCSPlayerController player, DateTime at)> _pending = new();
+    private RootCfg _cfg = new();
+    private string _cfgPath = "";
+
+    /// <summary>weapon_fire 记录，用于把 452 关联到开枪玩家（defIndex -> player, 时间）。</summary>
+    private readonly List<(int DefIndex, CCSPlayerController Player, DateTime At)> _pending = new();
+
+    private int _rawLogged;
+    private long _replaced;       // 成功还原成 CS2 原声的次数
+    private long _suppressFailed; // 还原失败、保留原版音效的次数
+    private int _msgSeen;
+
+    // ---------------------------------------------------------------- 生命周期
+
+    public override void Load(bool hotReload)
+    {
+        _logPath = Path.Combine(ModuleDirectory, "oldweaponsounds.log");
+        _cfgPath = Path.Combine(ModuleDirectory, "config.json");
+        RotateLog();
+
+        Log($"=== OldWeaponSounds v2.0 加载 (hotReload={hotReload}) ===");
+        LoadConfig();
+
+        HookUserMessage(MsgWeaponFireSound, OnWeaponFireSound, HookMode.Pre);
+        RegisterEventHandler<EventWeaponFire>(OnWeaponFire, HookMode.Pre);
+
+        Log($"配置: 总开关={_cfg.enabled} debug={_cfg.debug} 武器条目={_cfg.weapons.Count} " +
+            $"还原成CS2原声的武器={DisabledCount()} 保持CS:GO旧音的武器={EnabledCount()}");
+    }
+
+    private void RotateLog()
+    {
+        try
+        {
+            if (File.Exists(_logPath) && new FileInfo(_logPath).Length > MaxLogBytes)
+                File.Move(_logPath, _logPath + ".old", true);
+        }
+        catch { }
+    }
 
     private static void Log(string msg)
     {
@@ -65,46 +129,59 @@ public class OldWeaponSoundsPlugin : BasePlugin
         catch { }
     }
 
-    public override void Load(bool hotReload)
-    {
-        _logPath = Path.Combine(ModuleDirectory, "oldweaponsounds.log");
-        _cfgPath = Path.Combine(ModuleDirectory, "config.json");
-        Log($"=== OldWeaponSounds v1.0 加载 (hotReload={hotReload}) ===");
-
-        LoadConfig();
-
-        HookUserMessage(452, OnWeaponFireSound, HookMode.Pre);
-        RegisterEventHandler<EventWeaponFire>(OnWeaponFire, HookMode.Pre);
-
-        Log($"配置: enabled={_cfg.enabled} mode={_cfg.replaceMode} suppress={_cfg.suppressVanilla} 武器数={_cfg.weapons.Count}");
-    }
-
     private void LoadConfig()
     {
         try
         {
             if (!File.Exists(_cfgPath))
             {
-                _cfg = new RootCfg { enabled = false, replaceMode = "none", debug = true };
-                File.WriteAllText(_cfgPath, JsonSerializer.Serialize(_cfg,
-                    new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+                _cfg = new RootCfg();
+                SaveConfig();
                 Log($"未找到配置，已生成默认配置: {_cfgPath}");
                 return;
             }
+
             var json = File.ReadAllText(_cfgPath, Encoding.UTF8);
-            _cfg = JsonSerializer.Deserialize<RootCfg>(json) ?? new RootCfg();
+            var opts = new JsonSerializerOptions
+            {
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                AllowTrailingCommas = true,
+                PropertyNameCaseInsensitive = true,
+            };
+            _cfg = JsonSerializer.Deserialize<RootCfg>(json, opts) ?? new RootCfg();
+            _cfg.weapons ??= new Dictionary<string, WeaponCfg>();
+
+            // 兼容：config 里漏写事件名时按名字补全
             foreach (var kv in _cfg.weapons)
-                if (string.IsNullOrEmpty(kv.Value.soundevent))
-                    kv.Value.soundevent = $"Weapon_{kv.Value.name}.Single";
+            {
+                var w = kv.Value;
+                if (string.IsNullOrEmpty(w.name)) w.name = kv.Key;
+                if (string.IsNullOrEmpty(w.legacy_event)) w.legacy_event = $"Weapon_{w.name}.Single";
+                if (string.IsNullOrEmpty(w.orig_event)) w.orig_event = $"Orig_{w.name}.Single";
+            }
         }
         catch (Exception e)
         {
-            Log("读取配置失败，使用安全默认值: " + e.Message);
-            _cfg = new RootCfg { enabled = false, replaceMode = "none", debug = true };
+            // 读配置失败时保持"不干预"，此时玩家听到的是 addon 的 CS:GO 旧音（不是无声）
+            Log("读取配置失败，使用默认值(不干预任何武器): " + e.Message);
+            _cfg = new RootCfg { enabled = false, debug = true };
         }
     }
 
-    // ---------- 开火事件：记录"谁开了什么枪"，供 452 关联 ----------
+    private void SaveConfig()
+    {
+        try
+        {
+            File.WriteAllText(_cfgPath, JsonSerializer.Serialize(_cfg, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+        }
+        catch (Exception e) { Log("保存配置失败: " + e.Message); }
+    }
+
+    private int DisabledCount() => _cfg.weapons.Values.Count(w => !w.enabled);
+    private int EnabledCount() => _cfg.weapons.Values.Count(w => w.enabled);
+
+    // ------------------------------------------------ weapon_fire：记录"谁开了什么枪"
+
     private HookResult OnWeaponFire(EventWeaponFire e, GameEventInfo info)
     {
         try
@@ -118,10 +195,8 @@ public class OldWeaponSoundsPlugin : BasePlugin
             lock (_pending)
             {
                 _pending.Add((di, p, DateTime.UtcNow));
-                // 只保留最近 2 秒的记录，避免无限增长
-                _pending.RemoveAll(x => (DateTime.UtcNow - x.at).TotalSeconds > 2.0);
+                _pending.RemoveAll(x => (DateTime.UtcNow - x.At).TotalSeconds > 2.0);
             }
-            if (_cfg.debug) Log($"EVT weapon_fire player=\"{p.PlayerName}\" weapon={e.Weapon} defIdx={di}");
         }
         catch (Exception ex) { Log("weapon_fire 异常: " + ex.Message); }
         return HookResult.Continue;
@@ -136,79 +211,84 @@ public class OldWeaponSoundsPlugin : BasePlugin
         return -1;
     }
 
-    // ---------- 452：武器开火音效消息 ----------
+    // ------------------------------------------------ 452：武器开火音效消息
+
     private HookResult OnWeaponFireSound(UserMessage um)
     {
         try
         {
-            int wid = um.HasField("weapon_id") ? um.ReadInt("weapon_id") : -1;
-            int st = um.HasField("sound_type") ? um.ReadInt("sound_type") : -1;
-            int idi = um.HasField("item_def_index") ? um.ReadInt("item_def_index") : -1;
-
-            if (_cfg.debug)
-            {
-                string entInfo;
-                try
-                {
-                    var ent = Utilities.GetEntityFromIndex<CBaseEntity>(wid);
-                    entInfo = (ent != null && ent.IsValid)
-                        ? $"{ent.DesignerName}(owner={(ent.OwnerEntity?.Value?.Index.ToString() ?? "-")})"
-                        : "无效实体";
-                }
-                catch (Exception ex) { entInfo = "解析异常:" + ex.GetType().Name; }
-                Log($"UM452 weapon_id={wid} sound_type={st} item_def_index={idi} | weapon_id→{entInfo}");
-            }
+            _msgSeen++;
 
             if (!_cfg.enabled) return HookResult.Continue;
-            if (!_cfg.weapons.TryGetValue(idi.ToString(), out var wc)) return HookResult.Continue;
 
-            // 找出开枪者：优先用 weapon_id 当实体索引解析，其次用 weapon_fire 记录关联
+            var idi = um.HasField("item_def_index") ? um.ReadInt("item_def_index") : int.MinValue;
+            if (idi == int.MinValue) return HookResult.Continue;
+
+            // 查表：表里没有 / enabled=true -> 什么都不做，客户端播 addon 的 CS:GO 旧音
+            if (!_cfg.weapons.TryGetValue(idi.ToString(), out var wc)) return HookResult.Continue;
+            if (wc.enabled) return HookResult.Continue;
+
+            var wid = um.HasField("weapon_id") ? um.ReadInt("weapon_id") : -1;
+            var st = um.HasField("sound_type") ? um.ReadInt("sound_type") : -1;
+
+            if (_cfg.debug && _rawLogged < MaxRawDiagnostics)
+            {
+                _rawLogged++;
+                Log($"452 weapon_id={wid} sound_type={st} item_def_index={idi}({wc.name}) -> 该武器要还原成 CS2 原声");
+            }
+
+            // 1) 定位开枪者实体（位置音效必需）
             var shooter = ResolveShooter(wid, idi);
             if (shooter == null)
             {
-                if (_cfg.debug) Log($"未定位到开枪者 defIdx={idi}，放弃替换（避免无声）");
-                return HookResult.Continue;   // 安全兜底：不做任何改动
+                _suppressFailed++;
+                Log($"[保留原版] {wc.name}(def={idi}) 未定位到开枪者，不做任何替换（不会无声）");
+                return HookResult.Continue;
             }
 
             var pawn = shooter.PlayerPawn?.Value;
             if (pawn == null || !pawn.IsValid)
             {
-                if (_cfg.debug) Log("开枪者 pawn 无效，放弃替换");
+                _suppressFailed++;
+                Log($"[保留原版] {wc.name}(def={idi}) 开枪者 pawn 无效，不做任何替换（不会无声）");
                 return HookResult.Continue;
             }
 
-            var rf = new RecipientFilter();
-            rf.AddAllPlayers();
+            // 2) 先发出 CS2 原声事件（Orig_ 事件与原事件逐字段相同，仅事件名不同）
+            var recipients = new RecipientFilter();
+            recipients.AddAllPlayers();
+            var guid = pawn.EmitSound(wc.orig_event, recipients, 1.0f);
 
-            // 先播音，拿到 guid 再决定是否屏蔽原版 —— 失败则保留原版，绝不产生无声
-            uint guid;
-            if (_cfg.replaceMode == "vsnd" && !string.IsNullOrEmpty(wc.vsnd))
-                guid = pawn.EmitSound(wc.vsnd, rf, wc.volume);
-            else if (_cfg.replaceMode == "soundevent")
-                guid = pawn.EmitSound(wc.soundevent, rf, wc.volume);
-            else
-                return HookResult.Continue;   // none：只诊断
-
-            if (_cfg.debug)
-                Log($"已发射旧音效 [{wc.name}] mode={_cfg.replaceMode} guid={guid} 开枪者=\"{shooter.PlayerName}\"");
-
-            if (guid != 0 && _cfg.suppressVanilla)
+            // 3) 只有拿到非 0 guid 才屏蔽原版消息
+            if (guid == 0)
             {
-                if (_cfg.debug) Log("屏蔽原版开火音（返回 Handled）");
-                return HookResult.Handled;
+                _suppressFailed++;
+                Log($"[保留原版] {wc.name}(def={idi}) EmitSound(\"{wc.orig_event}\") 返回 guid=0，保留原版音效（不会无声）");
+                return HookResult.Continue;
             }
-            return HookResult.Continue;
+
+            _replaced++;
+            if (_cfg.debug)
+                Log($"[已还原] {wc.name}(def={idi}) 玩家=\"{shooter.PlayerName}\" -> {wc.orig_event} guid={guid}，已屏蔽原版消息");
+
+            return HookResult.Handled;
         }
         catch (Exception ex)
         {
-            Log("UM452 异常: " + ex.Message);
+            Log("452 处理异常(已放行原版): " + ex);
             return HookResult.Continue;
         }
     }
 
+    /// <summary>
+    /// 定位开枪者：
+    ///   A. 把 weapon_id 当实体索引 -> OwnerEntity（玩家则直接返回，pawn 则反查控制器）
+    ///   B. weapon_fire 事件记录的 (defIndex -> player) FIFO，取 1 秒内最近的一条
+    /// 都失败返回 null（调用方会保留原版音效）。
+    /// </summary>
     private CCSPlayerController ResolveShooter(int weaponId, int defIndex)
     {
-        // 策略 A：weapon_id 是武器实体索引
+        // 策略 A
         try
         {
             var ent = Utilities.GetEntityFromIndex<CBaseEntity>(weaponId);
@@ -217,66 +297,106 @@ public class OldWeaponSoundsPlugin : BasePlugin
                 var owner = ent.OwnerEntity?.Value;
                 if (owner != null && owner.IsValid)
                 {
-                    var ctrl = owner.DesignerName == "player"
-                        ? owner.As<CCSPlayerController>()
-                        : null;
-                    if (ctrl != null && ctrl.IsValid) return ctrl;
-                    // 属主是 pawn 时反查控制器
+                    if (owner.DesignerName == "player")
+                    {
+                        var ctrl = owner.As<CCSPlayerController>();
+                        if (ctrl != null && ctrl.IsValid) return ctrl;
+                    }
                     foreach (var p in Utilities.GetPlayers())
-                        if (p.PlayerPawn?.Value?.Index == owner.Index) return p;
+                        if (p.IsValid && p.PlayerPawn?.Value?.Index == owner.Index) return p;
                 }
             }
         }
         catch { }
 
-        // 策略 B：用 weapon_fire 记录按 defIndex 关联（FIFO，最近的优先）
+        // 策略 B
         lock (_pending)
         {
             var now = DateTime.UtcNow;
-            for (int i = _pending.Count - 1; i >= 0; i--)
+            for (var i = _pending.Count - 1; i >= 0; i--)
             {
                 var x = _pending[i];
-                if (x.defIndex == defIndex && (now - x.at).TotalSeconds < 1.0)
+                if (!x.Player.IsValid)
                 {
                     _pending.RemoveAt(i);
-                    return x.player;
+                    continue;
+                }
+                if (x.DefIndex == defIndex && (now - x.At).TotalSeconds < 1.0)
+                {
+                    _pending.RemoveAt(i);
+                    return x.Player;
                 }
             }
+            // 清理过期记录
+            _pending.RemoveAll(x => (now - x.At).TotalSeconds > 2.0);
         }
+
         return null;
     }
 
-    // ---------- 命令 ----------
-    [ConsoleCommand("css_oldws", "旧版枪声开关: css_oldws <0|1> | status | reload")]
-    public void OnCmd(CCSPlayerController? player, CommandInfo info)
-    {
-        var arg = info.ArgCount > 1 ? info.GetArg(1).ToLower() : "status";
+    // ---------------------------------------------------------------- 命令
 
-        if (arg == "reload")
+    [ConsoleCommand("css_oldws", "旧版枪声每武器开关: css_oldws status | css_oldws <item_def_index> on|off | css_oldws reload | css_oldws list")]
+    public void OnOldWsCommand(CCSPlayerController? player, CommandInfo info)
+    {
+        var a1 = info.ArgCount > 1 ? info.GetArg(1).Trim().ToLowerInvariant() : "status";
+
+        switch (a1)
         {
-            LoadConfig();
-            info.ReplyToCommand($"[OldWeaponSounds] 配置已重载: enabled={_cfg.enabled} mode={_cfg.replaceMode} 武器数={_cfg.weapons.Count}");
+            case "reload":
+                LoadConfig();
+                info.ReplyToCommand($"[OldWeaponSounds] 配置已重载: 总开关={_cfg.enabled} 武器条目={_cfg.weapons.Count} 还原CS2原声={DisabledCount()}");
+                return;
+
+            case "list":
+                {
+                    var restored = _cfg.weapons.Where(kv => !kv.Value.enabled).Select(kv => $"{kv.Value.name}({kv.Key})").ToList();
+                    info.ReplyToCommand(restored.Count == 0
+                        ? "[OldWeaponSounds] 当前没有武器被还原成 CS2 原声（全部使用 CS:GO 旧音）"
+                        : $"[OldWeaponSounds] 还原成 CS2 原声 ({restored.Count}): {string.Join(", ", restored)}");
+                    return;
+                }
+
+            case "status":
+                info.ReplyToCommand($"[OldWeaponSounds] 总开关={_cfg.enabled} debug={_cfg.debug} 武器条目={_cfg.weapons.Count} " +
+                                    $"保持CS:GO旧音={EnabledCount()} 还原CS2原声={DisabledCount()}");
+                info.ReplyToCommand($"[OldWeaponSounds] 已处理 452 消息={_msgSeen} 成功还原={_replaced} 还原失败(保留原版)={_suppressFailed}");
+                info.ReplyToCommand("[OldWeaponSounds] 用法: css_oldws <item_def_index> on|off （on=CS:GO旧音, off=CS2原声）");
+                return;
+        }
+
+        // css_oldws <item_def_index> on|off
+        if (!int.TryParse(a1, out var defIndex))
+        {
+            info.ReplyToCommand("[OldWeaponSounds] 用法: css_oldws status | css_oldws list | css_oldws <item_def_index> on|off | css_oldws reload");
             return;
         }
-        if (arg == "status")
+
+        if (!_cfg.weapons.TryGetValue(defIndex.ToString(), out var wc))
         {
-            info.ReplyToCommand($"[OldWeaponSounds] enabled={_cfg.enabled} mode={_cfg.replaceMode} suppress={_cfg.suppressVanilla} 武器数={_cfg.weapons.Count}");
-            info.ReplyToCommand("[OldWeaponSounds] 要启用请执行 css_oldws 1（需先挂载 soundevents addon 才能听到旧音色）");
+            info.ReplyToCommand($"[OldWeaponSounds] 未找到 item_def_index={defIndex} 的武器");
             return;
         }
-        if (arg == "0" || arg == "1")
+
+        if (info.ArgCount <= 2)
         {
-            _cfg.enabled = arg == "1";
-            try
-            {
-                File.WriteAllText(_cfgPath, JsonSerializer.Serialize(_cfg,
-                    new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
-            }
-            catch (Exception e) { Log("保存配置失败: " + e.Message); }
-            info.ReplyToCommand($"[OldWeaponSounds] enabled={_cfg.enabled}");
-            Log($"命令切换 enabled={_cfg.enabled}");
+            info.ReplyToCommand($"[OldWeaponSounds] {wc.name}({defIndex}) 当前={(wc.enabled ? "CS:GO 旧音" : "CS2 原声")}；" +
+                                $"用法: css_oldws {defIndex} on|off");
             return;
         }
-        info.ReplyToCommand("[OldWeaponSounds] 用法: css_oldws <0|1|status|reload>");
+
+        var a2 = info.GetArg(2).Trim().ToLowerInvariant();
+        var isOn = a2 is "on" or "1" or "true" or "yes" or "enable";
+        var isOff = a2 is "off" or "0" or "false" or "no" or "disable";
+        if (!isOn && !isOff)
+        {
+            info.ReplyToCommand($"[OldWeaponSounds] 参数要 on 或 off，收到 \"{a2}\"");
+            return;
+        }
+
+        wc.enabled = isOn;
+        SaveConfig();
+        info.ReplyToCommand($"[OldWeaponSounds] {wc.name}({defIndex}) -> {(isOn ? "CS:GO 旧音(插件不干预)" : "CS2 原声(插件拦截并播放 Orig 事件)")}");
+        Log($"命令: {wc.name}(def={defIndex}) enabled={wc.enabled} 操作者={(player?.PlayerName ?? "服务端控制台")}");
     }
 }

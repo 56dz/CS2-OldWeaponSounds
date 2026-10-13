@@ -1,78 +1,91 @@
 # CS2-OldWeaponSounds
 
-还原 CS:GO 旧版武器枪声的 CS2 服务端方案：**CounterStrikeSharp 插件 + soundevents 覆盖 addon**。
+把 CS2 服务器的武器枪声换回 **CS:GO 旧版**：**soundevents 覆盖 addon + CounterStrikeSharp 每武器开关**。
 
-> 覆盖 29 把武器（AK47、AWP、M4A1、沙鹰、AUG、P250、SSG08、MP9、MAC10、UMP45、Nova、Negev、M249、SG556、Tec9、五七、Galil…）
-> **addon 不含任何音频文件**，体积极小、下载极快。
+- **35 把**武器的开火音效（`Weapon_XXX.Single`）全部覆盖为 CS:GO 旧音
+- 其中 **29 把**指向 CS2 客户端**已经存在**的 CS:GO 原文件（零体积）
+- **5 把**（FAMAS / Galil / Glock / Revolver / XM1014）CS2 换了音频，由 addon 自带 wav 编译（addon ≈ 3 MB）
+- **AK47** 用 addon 自带的 CS:GO **第一人称**音效（`ak47_csgo_01.vsnd`）
+- 每把武器都额外提供 `Orig_Weapon_XXX.Single`（内容 = CS2 原事件，逐字段相同），
+  插件可以按武器把音效**单独还原成 CS2 原声**
+
+> 原理：CS2 服务端只下发 **soundevent 名 + 参数**，音色由**客户端本地**解析。
+> 因此覆盖客户端本地的 soundevent 定义（addon）是唯一能同时保证音色与 3D 定位/衰减的做法。
 
 ---
 
 ## 一、核心发现（决定了整个方案）
 
-**CS2 客户端至今仍原样保留着 CS:GO 时代的武器枪声文件。**
+**CS2 客户端至今仍原样保留着大量 CS:GO 时代的武器枪声文件。**
 
-逐字节比对 AK47 的结果：
+AK47 逐字节比对：
 
 | 来源 | 文件 | 大小 |
 |------|------|------|
-| CS:GO 原始 | `sound/weapons/ak47/ak47-1.wav` | 288,436 B（PCM 数据 288,392 B） |
-| CS2 现有 | `sounds/weapons/ak47/ak47-1.vsnd_c` | 289,678 B（头部 1,286 B + PCM 288,392 B） |
+| CS:GO 原始 | `sound/weapons/ak47/ak47-1.wav` | 288,436 B（PCM 288,392 B） |
+| CS2 现有 | `sounds/weapons/ak47/ak47-1.vsnd_c` | 289,678 B（头 1,286 B + PCM 288,392 B） |
 
-**CS2 里那份的 PCM 与 CS:GO 原始 WAV 逐字节 100% 相同**（相同字节数 `288392 / 288392`）。
+两者 PCM **逐字节 100% 相同**。CS:GO 里 `3rd_Weapon_AK47.Single → ak47-1.wav`（听别人开枪），
+`Weapon_AK47.Single → ak47_01.wav`（自己开枪）；CS2 已取消 `3rd_` 体系（数量为 0），
+一个事件只能选一份文件：
 
-翻 CS:GO 的 `scripts/game_sounds_weapons.txt` 可以确认 `ak47-1` 的身份：
-
-```json
-"Weapon_AK47.Single"      → "wave" "weapons/ak47/ak47_01.wav"   // 自己开枪听到的
-"3rd_Weapon_AK47.Single"  → "wave" "weapons/ak47/ak47-1.wav"    // 听到"别人"开枪的
-```
-
-也就是说 `ak47-1` 正是 **CS:GO 里别人开枪时你听到的经典 AK 枪声**，而 CS2 完整保留了它。
-（CS2 反而把 `ak47_01` 换成了新录音 —— 已验证 CS2 的 `ak47_01.vsnd_c` 中**找不到** CS:GO 的 PCM。）
-
-### 全武器普查
-
-自动比对 CS:GO 全部 590 个武器音频 vs CS2 的 1237 个：
-
-- **35 把有开火音效的武器中，30 把的 CS:GO 原版枪声在 CS2 客户端中 PCM 逐字节保留**
-- 被 CS2 换掉、需要自行编译音频的 5 把：`FAMAS`、`Galil`、`Glock`、`Revolver`、`XM1014`
-
-> 因此 **无需从 CS:GO 提取音频、无需 wav→vsnd 编译**，只要让客户端去播它硬盘上已有的旧文件即可。
+- AK47 实测选第三人称 `ak47-1` 会"比 CS:GO 更脆"，因此 AK47 采用**第一人称** `ak47_csgo_01`
+  （从 CS:GO 的 `weapons/ak47/ak47_01.wav` 提取后编译，随 addon 附带）。
+- 全武器普查：35 把有开火音效的武器中，**30 把**的 CS:GO 原版枪声在 CS2 客户端中 PCM 逐字节保留
+  （`docs/verified_map.json`），**5 把**被换掉、必须自带音频。
 
 ---
 
-## 二、实现方式
+## 二、覆盖清单（全部 35 把）
 
-### 音效链路（为什么必须用 addon）
+每个武器生成两个事件：`Weapon_XXX.Single`（CS:GO 旧音）与 `Orig_Weapon_XXX.Single`（CS2 原音）。
 
-CS2 服务端只下发 **soundevent 名称的哈希 + 参数**，**音色定义由客户端本地解析**。所以：
+| def_index | 武器 | weapon_name | 旧音来源 | `vsnd` |
+|---|---|---|---|---|
+| 1 | DEagle | `weapon_deagle` | CS2 已含 | `sounds/weapons/deagle/deagle_01.vsnd` |
+| 2 | ELITE | `weapon_elite` | CS2 已含 | `sounds/weapons/elite/elites_01.vsnd` |
+| 3 | FiveSeven | `weapon_fiveseven` | CS2 已含 | `sounds/weapons/fiveseven/fiveseven_01.vsnd` |
+| 4 | Glock | `weapon_glock` | addon 自带（CS:GO 提取） | `sounds/weapons_csgo/glock18/glock_01.vsnd` |
+| 7 | AK47 | `weapon_ak47` | addon 自带（**第一人称**） | `sounds/weapons/ak47/ak47_csgo_01.vsnd` |
+| 8 | AUG | `weapon_aug` | CS2 已含 | `sounds/weapons/aug/aug_01.vsnd` |
+| 9 | AWP | `weapon_awp` | CS2 已含 | `sounds/weapons/awp/awp_01.vsnd` |
+| 10 | FAMAS | `weapon_famas` | addon 自带（CS:GO 提取） | `sounds/weapons_csgo/famas/famas_01.vsnd` |
+| 11 | G3SG1 | `weapon_g3sg1` | CS2 已含 | `sounds/weapons/g3sg1/g3sg1_01.vsnd` |
+| 13 | Galil | `weapon_galilar` | addon 自带（CS:GO 提取） | `sounds/weapons_csgo/galilar/galil_01.vsnd` |
+| 14 | M249 | `weapon_m249` | CS2 已含 | `sounds/weapons/m249/m249-1.vsnd` |
+| 16 | M4A1 | `weapon_m4a1` | CS2 已含 | `sounds/weapons/m4a1/m4a1_01.vsnd` |
+| 17 | MAC10 | `weapon_mac10` | CS2 已含 | `sounds/weapons/mac10/mac10_01.vsnd` |
+| 19 | P90 | `weapon_p90` | CS2 已含 | `sounds/weapons/p90/p90_01.vsnd` |
+| 23 | MP5 | `weapon_mp5sd` | CS2 已含 | `sounds/weapons/mp5/mp5_01.vsnd` |
+| 24 | UMP45 | `weapon_ump45` | CS2 已含 | `sounds/weapons/ump45/ump45_02.vsnd` |
+| 25 | XM1014 | `weapon_xm1014` | addon 自带（CS:GO 提取） | `sounds/weapons_csgo/xm1014/xm1014-1.vsnd` |
+| 26 | bizon | `weapon_bizon` | CS2 已含 | `sounds/weapons/bizon/bizon_01.vsnd` |
+| 27 | Mag7 | `weapon_mag7` | CS2 已含 | `sounds/weapons/mag7/mag7_01.vsnd` |
+| 28 | Negev | `weapon_negev` | CS2 已含 | `sounds/weapons/negev/negev_01.vsnd` |
+| 29 | Sawedoff | `weapon_sawedoff` | CS2 已含 | `sounds/weapons/sawedoff/sawedoff-1.vsnd` |
+| 30 | tec9 | `weapon_tec9` | CS2 已含 | `sounds/weapons/tec9/tec9_02.vsnd` |
+| 31 | Taser | `weapon_taser` | CS2 已含 | `sounds/weapons/taser/taser_shoot.vsnd` |
+| 32 | hkp2000 | `weapon_hkp2000` | CS2 已含 | `sounds/weapons/hkp2000/hkp2000_01.vsnd` |
+| 33 | MP7 | `weapon_mp7` | CS2 已含 | `sounds/weapons/mp7/mp7_01.vsnd` |
+| 34 | MP9 | `weapon_mp9` | CS2 已含 | `sounds/weapons/mp9/mp9_01.vsnd` |
+| 35 | Nova | `weapon_nova` | CS2 已含 | `sounds/weapons/nova/nova-1.vsnd` |
+| 36 | P250 | `weapon_p250` | CS2 已含 | `sounds/weapons/p250/p250_01.vsnd` |
+| 38 | SCAR20 | `weapon_scar20` | CS2 已含 | `sounds/weapons/scar20/scar20_01.vsnd` |
+| 39 | sg556 | `weapon_sg556` | CS2 已含 | `sounds/weapons/sg556/sg556_01.vsnd` |
+| 40 | SSG08 | `weapon_ssg08` | CS2 已含 | `sounds/weapons/ssg08/ssg08_01.vsnd` |
+| 61 | USP | `weapon_usp_silencer` | CS2 已含 | `sounds/weapons/usp/usp_unsilenced_01.vsnd` |
+| 63 | CZ75A | `weapon_cz75a` | CS2 已含 | `sounds/weapons/cz75a/cz75_01.vsnd` |
+| 64 | Revolver | `weapon_revolver` | addon 自带（CS:GO 提取） | `sounds/weapons_csgo/revolver/revolver-1_01.vsnd` |
+| — | PartyHorn | `weapon_partyhorn` | CS2 已含 | `sounds/weapons/party_horn_01.vsnd` |
 
-- 服务端插件**无法**单方面改变客户端播放的音色；
-- 插件用 `EmitSound()` 直接播 `.vsnd` **路径**虽然能响，但社区实测**会丢失 3D 定位与距离衰减**（[cs2-quake-sounds](https://github.com/Kandru/cs2-quake-sounds) README：直接文件路径 "play at full volume and are not positional"）。枪声没有方位感实战体验会崩。
+说明：
 
-所以正确做法是**覆盖客户端本地的 soundevent 定义**，保留原有的 3D/衰减配置，只把 `vsnd_files_track_01` 指向已存在的旧 `.vsnd`：
-
-```
-<addon>/soundevents/soundevents_addon.vsndevts     ← 文件名与位置都不可改，否则不 precache
-```
-
-Valve 官方文档（CS2 Workshop Tools / Addon Sounds）明确：
-> *"To override existing soundevents, that is all that is required."*
-
-### 插件的作用与安全设计
-
-插件本身**不是**音色的来源（音色由 addon 决定），它负责：开关控制、诊断、以及"不用 addon 时的降级方案"。
-
-`replaceMode` 三种模式：
-
-| 模式 | 行为 | 适用 |
-|------|------|------|
-| `none` | 只写日志诊断，**不改变任何音效** | 默认值，绝对安全 |
-| `soundevent` | 播放 soundevent（配合 addon，**方位/衰减正确**） | **推荐** |
-| `vsnd` | 直接播 `.vsnd` 文件路径 | 不想用 addon 时可用，但可能丢 3D 定位 |
-
-**防呆设计：先发射新音效、拿到有效 guid 后才屏蔽原版**（返回 `HookResult.Handled`）。
-任何一步失败都**保留原版音效**，因此**不会出现"无声枪"**。
+- **def_index 全部来自 CS2 `scripts/items/items_game.txt`**（`docs/items_game_defindex.tsv` 是解析结果）。
+  注意 `weapon_m4a1`=16 在 CS2 里显示名是 **M4A4**（M4A1-S 是 60，使用 `Weapon_M4A1.Silenced`，本次不在范围内）。
+- **PartyHorn**：`items_game.txt` 里**没有**这个物品（只有 `Weapon_PartyHorn.Single` 这个事件），
+  因此它**没有 item_def_index**，插件配置里用非数字 key（`partyhorn`）保证永不误匹配；
+  addon 的覆盖仍然有效。
+- 5 把自带音频的武器让 addon 体积从 ~10 KB 增加到 **≈ 3 MB**（编译后）。
 
 ---
 
@@ -80,60 +93,132 @@ Valve 官方文档（CS2 Workshop Tools / Addon Sounds）明确：
 
 ```
 .
-├── addon/soundevents/soundevents_addon.vsndevts   # 核心：29 武器的 soundevent 覆盖定义
+├── addon/soundevents/soundevents_addon.vsndevts   # 核心：35x2 = 70 个 soundevent 覆盖定义（162 KB）
 ├── plugin/
-│   ├── Plugin.cs                                  # 插件源码
+│   ├── Plugin.cs                                  # 插件源码（每武器开关）
 │   ├── OldWeaponSounds.csproj                     # 工程文件（net10.0）
-│   ├── config.json                                # 武器映射配置（默认关闭）
+│   ├── config.json                                # 35 把武器的开关配置（默认全部 = CS:GO 旧音）
 │   └── compiled/                                  # 已编译产物，可直接部署
 │       ├── OldWeaponSounds.dll
 │       ├── OldWeaponSounds.deps.json
 │       └── OldWeaponSounds.pdb
-├── tools/                                         # 可复现的全套分析脚本（Python3）
-│   ├── vpk.py            # Source 1/2 通用 VPK 解析与提取
-│   ├── cmp_audio.py      # 比对 .wav 与 .vsnd_c 的 PCM 是否一致
-│   ├── build_map.py      # 从 CS:GO 音效脚本生成映射
-│   ├── verify_map.py     # 逐项校验 PCM 一致性并生成带 def_index 的表
-│   ├── gen_addon.py      # 生成 soundevents_addon.vsndevts
-│   ├── gen_config.py     # 生成插件 config.json
-│   └── match_sounds.py   # CS:GO / CS2 音频清单比对
+├── tools/
+│   ├── legacy_map_full.json     # 35 把武器映射表（事件名 / def_index / 旧音 vsnd）★核心数据
+│   ├── build_full_addon.js      # 生成 70 事件的 soundevents_addon.vsndevts
+│   ├── verify_full_addon.js     # 校验生成的文本（括号/事件数/逐块 diff）
+│   ├── verify_compiled_vsndevts.js # 校验**编译产物**（resourceinfo 转储）
+│   ├── gen_config_full.js       # 生成插件 config.json
+│   ├── verify_plugin_config.js  # 校验 config ↔ addon ↔ items_game.txt 三方一致
+│   ├── extract_sources.sh       # 提取 gsw.txt 与 5 个 CS:GO 原始 wav
+│   ├── build_faithful_addon.js  # 旧版（只覆盖 30 把、无 Orig_ 事件）
+│   ├── vpk.py / cmp_audio.py / build_map.py / verify_map.py / match_sounds.py  # 前期取证脚本
 └── docs/
-    ├── verified_map.json        # 30 把武器的校验结果（含 PCM 一致性）
+    ├── verified_map.json        # 30 把"CS2 已含且 PCM 与 CS:GO 一致"的校验结果
+    ├── items_game_defindex.tsv  # CS2 items_game.txt 解析出的 def_index → weapon_name
     └── 可行性分析.md            # 完整技术调研报告（含大量一手取证）
 ```
 
 ---
 
-## 四、使用方法
+## 四、构建
 
-### 第 1 步：编译并发布 addon（主路线，决定成败）
+### 1. 准备素材
 
-需要 **CS2 创意工坊工具**（`resourcecompiler.exe` 位于
-`<CS2>/game/bin/win64/`，随工具安装）。
+```bash
+# gsw.txt（CS2 真实 soundevent 定义，纯文本 kv3）+ 5 个 CS:GO 原始 wav
+CS2="<CS2 安装目录>" CSGO_DS="<CS:GO DS 目录>" ./tools/extract_sources.sh
+```
 
-1. 打开 **CS2 创意工坊工具**，用 `addon_template` 新建 addon（例如 `oldweaponsounds`）
-2. 把 `addon/soundevents/soundevents_addon.vsndevts` 放到该 addon 的
-   **`soundevents/soundevents_addon.vsndevts`**（名字与目录必须完全一致）
-3. 也可手动编译验证：
-   ```bat
-   resourcecompiler.exe -i "<addon>\soundevents\soundevents_addon.vsndevts" ^
-                        -game "<CS2>\game\csgo\gameinfo.gi"
-   ```
-4. 用 **Workshop Item Editor** 发布为**公开**物品（客户端必须能下载到）
-5. 服务器启用 [MultiAddonManager](https://github.com/Source2ZE/MultiAddonManager)，
-   在 `game/csgo/cfg/multiaddonmanager/multiaddonmanager.cfg` 填入 Workshop ID：
-   ```cfg
-   mm_extra_addons <你的workshopID>
-   ```
-6. 客户端首次进服会因下载 addon **被断开并自动重连一次**（该机制的固有行为）
+`gsw.txt` 来自社区转储（CS2 自带的 `game_sounds_weapons.vsndevts_c` 是 old-introspected blob，
+`resourceinfo.exe` 无法导出文本）。5 个 wav 只在 CS:GO 里存在。
 
-> **想覆盖被 CS2 换掉的那 5 把**（FAMAS/Galil/Glock/Revolver/XM1014）：
-> 额外把 CS:GO 的 `.wav` 放进 addon 的 `sounds/` 目录让工具链编译成 `.vsnd`，
-> 再在 vsndevts 里指向它们。源 WAV 可用 `tools/vpk.py` 从 CS:GO DS 的 `pak01_dir.vpk` 提取。
+### 2. 生成覆盖文件
 
-### 第 2 步：部署插件（可选）
+```bash
+node tools/build_full_addon.js gsw.txt tools/legacy_map_full.json addon/soundevents/soundevents_addon.vsndevts
+node tools/verify_full_addon.js addon/soundevents/soundevents_addon.vsndevts gsw.txt tools/legacy_map_full.json
+```
 
-把 `plugin/compiled/` 下的文件放到：
+输出结构（**必须是**这个结构，否则 addon 不生效）：
+
+```
+<!-- kv3 encoding:text:version{...} format:generic:version{...} -->   ← 第 1 行 kv3 头
+{                                                                   ← 第 2 行**匿名**根块
+	Weapon_AK47.Single = { ...原版全部字段..., vsnd_files_track_01 = [ "…/ak47_csgo_01.vsnd", ] }
+	Orig_Weapon_AK47.Single = { ...原版全部字段..., vsnd_files_track_01 = [ "…/ak47_02.vsnd", … ] }
+	…（35 把 x 2 = 70 个事件）
+}
+```
+
+- 字段全部逐字取自 CS2 真实定义，**只改 `vsnd_files_track_01`**，
+  `distance_volume_mapping_curve`、`occlusion_intensity`、`position_offset`、
+  `broadcast_distance_override` 等 3D/衰减/遮挡字段原样保留 → 方位与距离衰减不会变。
+- `vsnd_files_track_01` 的**数组**与**标量**两种写法都已兼容。
+- `vsnd_duration` 由编译器按实际引用的 vsnd **自动重算**，无需手工维护。
+
+### 3. 编译
+
+```bat
+resourcecompiler.exe -f -i "<CS2>\content\csgo_addons\oldweaponsounds\soundevents\soundevents_addon.vsndevts" -game "<CS2>\game\csgo"
+resourcecompiler.exe -f -i "<CS2>\content\csgo_addons\oldweaponsounds\sounds\weapons_csgo\famas\famas_01.wav" -game "<CS2>\game\csgo"
+:: …其余 4 个 wav（galilar / glock18 / revolver / xm1014）同样处理
+```
+
+> `-game` 必须传**目录**（`<CS2>\game\csgo`），传 `gameinfo.gi` 会 `FATAL ERROR`。
+
+产物：`<CS2>\game\csgo_addons\oldweaponsounds\…`（**不是** `game\csgo\`）：
+
+| 产物 | 大小 |
+|------|------|
+| `soundevents/soundevents_addon.vsndevts_c` | 10,069 B（70 个事件） |
+| `sounds/weapons/ak47/ak47_csgo_01.vsnd_c` | 503,858 B |
+| `sounds/weapons_csgo/famas/famas_01.vsnd_c` | 450,278 B |
+| `sounds/weapons_csgo/galilar/galil_01.vsnd_c` | 558,066 B |
+| `sounds/weapons_csgo/glock18/glock_01.vsnd_c` | 293,750 B |
+| `sounds/weapons_csgo/revolver/revolver-1_01.vsnd_c` | 618,700 B |
+| `sounds/weapons_csgo/xm1014/xm1014-1.vsnd_c` | 564,782 B |
+
+校验编译产物：
+
+```bash
+resourceinfo.exe -i <addon>/soundevents/soundevents_addon.vsndevts_c -all -baremode -game "<CS2>\game\csgo" > dump.txt
+node tools/verify_compiled_vsndevts.js dump.txt gsw.txt tools/legacy_map_full.json
+```
+
+### 4. 发布 addon
+
+用 **CS2 创意工坊工具** 打开 addon 并 Publish（客户端必须能下载到）。
+服务器侧 [MultiAddonManager](https://github.com/Source2ZE/MultiAddonManager) 配置：
+
+```cfg
+mm_extra_addons        "<workshopID>"
+mm_client_extra_addons "<workshopID>"
+```
+
+⚠️ **每次改了 addon 都必须重新发布**，否则客户端拿到的还是旧版本。
+
+---
+
+## 五、插件：每武器开关
+
+### 语义（关键）
+
+addon 把 `Weapon_XXX.Single` 覆盖成 CS:GO 旧音，所以 **默认所有玩家听到的都是 CS:GO 旧音**。
+插件只做一件事：**把指定武器还原成 CS2 原声**。
+
+| 配置 | 行为 |
+|------|------|
+| `enabled: false`（总开关） | 插件完全不干预 → 全部武器 = CS:GO 旧音 |
+| 武器 `enabled: true`（默认） | 插件**什么都不做**，原版开火音效消息照常发出 → 客户端播 addon 的旧音 |
+| 武器 `enabled: false` | 插件拦下该武器的 452 消息，**先**用 `EmitSound` 播放 `Orig_Weapon_XXX.Single`，**只有 guid != 0** 才返回 `Handled` 屏蔽原版 → 还原成 CS2 原声 |
+
+`Orig_` 事件的字段与 CS2 原事件**逐字段相同**（只改事件名、不改 `vsnd_files_track_01`），
+所以"还原"后的音色/衰减就是 CS2 原版。
+
+**防无声保证**：定位不到开枪者、pawn 无效、`EmitSound` 返回 guid=0 —— 任何一种情况都
+**返回 `Continue` 保留原版音效**，绝不屏蔽。日志里会写明 `[保留原版]`。
+
+### 部署
 
 ```
 game/csgo/addons/counterstrikesharp/plugins/OldWeaponSounds/
@@ -142,153 +227,157 @@ game/csgo/addons/counterstrikesharp/plugins/OldWeaponSounds/
 └── config.json
 ```
 
-前置依赖：**Metamod:Source** + **CounterStrikeSharp**。
+前置依赖：**Metamod:Source** + **CounterStrikeSharp**。替换 dll 后 CSS 约 1 秒自动热重载。
 
-**命令**（控制台或游戏内聊天）：
+### 命令
 
 | 命令 | 说明 |
 |------|------|
-| `css_oldws status` | 查看当前状态 |
-| `css_oldws 1` / `0` | 启用 / 停用替换 |
-| `css_oldws reload` | 重载 `config.json` |
+| `css_oldws status` | 总开关 / 武器条目数 / 已处理消息数 / 成功还原数 |
+| `css_oldws list` | 列出所有被还原成 CS2 原声的武器 |
+| `css_oldws <item_def_index> on\|off` | `on` = CS:GO 旧音（默认）、`off` = CS2 原声，并写回 config.json |
+| `css_oldws reload` | 重新读取 config.json |
 
-**配置**（`config.json`）：
+### 配置（`config.json`）
 
 ```jsonc
 {
-  "enabled": false,          // 总开关，默认 false（纯诊断，不改音效）
-  "replaceMode": "none",     // none | soundevent(推荐) | vsnd
-  "suppressVanilla": true,   // 替换成功后屏蔽原版，避免双重音
-  "debug": true,             // 诊断日志
+  "enabled": true,          // 插件总开关
+  "debug": true,            // 诊断日志
   "weapons": {
-    "7": {                   // item_def_index，7 = AK47
+    "7": {                  // item_def_index
       "name": "AK47",
       "weapon_name": "weapon_ak47",
-      "vsnd": "sounds/weapons/ak47/ak47-1.vsnd",
-      "soundevent": "Weapon_AK47.Single",
-      "volume": 1.0
+      "item_def_index": 7,
+      "legacy_event": "Weapon_AK47.Single",        // addon 覆盖后的 CS:GO 旧音
+      "orig_event": "Orig_Weapon_AK47.Single",     // 内容 = CS2 原事件
+      "enabled": true                              // true=旧音, false=CS2 原声
     }
-    // …共 29 把
+    // …共 35 把（含 partyhorn 的非数字 key）
   }
 }
 ```
 
-日志：`plugins/OldWeaponSounds/oldweaponsounds.log`
+日志：`plugins/OldWeaponSounds/oldweaponsounds.log`（超过 2 MB 自动归档为 `.old`）
 
 ### 自行编译插件
 
 ```bash
-# 需要 .NET SDK（API 目标框架为 net10.0）
-dotnet build -c Release
+dotnet build -c Release   # 需要 .NET SDK（API 目标框架 net10.0）
 ```
-`OldWeaponSounds.csproj` 通过 `<Reference>` 直接引用服务器上的
-`CounterStrikeSharp.API.dll`，避免 NuGet 版本不匹配。若你的路径不同，请修改 `HintPath`。
+
+`OldWeaponSounds.csproj` 通过 `<Reference>` 直接引用服务器上的 `CounterStrikeSharp.API.dll`，
+避免 NuGet 版本不匹配；路径不同请改 `HintPath`。
 
 ---
 
-## 五、已验证 / 未验证（诚实标注）
+## 六、已验证 / 未验证（诚实标注）
 
-**已验证（逐字节或源码级）：**
+**已验证（脚本可复现，见 `tools/verify_*.js`）**
 
-- CS2 内置 30 把武器的 CS:GO 原版枪声，PCM 与 CS:GO 一致（`docs/verified_map.json`）
-- `item_def_index` 解析经交叉验证：`weapon_ak47=7`、`weapon_awp=9`、`weapon_m4a1_silencer=60`、`weapon_usp_silencer=61`（与 [StopSound](https://github.com/oylsister/StopSound) 源码注释一致）
-- 插件编译通过、在 CS2 DS 上加载成功、配置解析正确
+- 生成的 `soundevents_addon.vsndevts`：kv3 头 + 匿名根块、大括号平衡、**70 个事件**、
+  每块都有 `vsnd_files_track_01`；35 个旧音块的差异**只**在 vsnd 上（其余逐行与原块一致）✓
+- **编译产物** `soundevents_addon.vsndevts_c`（用 `resourceinfo.exe` 转储后校验）：
+  70 个事件全部在册（含 `m_SubassetDefinitions.soundevent` 清单）、
+  35 个旧音 vsnd 与映射表一致、35 个 `Orig_` vsnd 与 CS2 原事件一致、
+  同一武器两块除 vsnd/`vsnd_duration` 外**逐行一致** ✓
+- 5 个新编译的 `.vsnd_c`（+ AK47）的 PCM 与 CS:GO 原始 wav **逐字节相同** ✓
+- 29 个指向 CS2 已有文件的 vsnd 路径，在 CS2 DS 的 `pak01_dir.vpk` 中**全部存在** ✓
+- 35 把武器的 `item_def_index` / `weapon_name` 与 CS2 `items_game.txt` **完全一致**（34 个数字条目 + PartyHorn 无索引）✓
+- `config.json` 的 70 个事件名全部命中 addon；35 条映射无遗漏 ✓
+- 插件在服务器 `dotnet build -c Release` **编译通过（0 错误）**，
+  部署后 CSS **热重载成功、加载无报错**（`logs/log-all*.txt` 中
+  `Reloading → Unloading → Finished unloading → Loading → Finished loading` 全绿）✓
+- addon 覆盖客户端同名 soundevent 后，客户端会播放旧音 —— 由用户此前实测确认（AK47）✓
 
-**未验证（需要进服用耳朵确认）：**
+**未验证（听感类，需要人进服带耳机确认）**
 
-- addon 覆盖后枪声是否真的变为 CS:GO 旧版音色
-- 3D 方位与距离衰减是否正常
-- 插件 `soundevent` / `vsnd` 两种模式的听感差异
-- `Handled` 屏蔽是否彻底（若听到双重音，把 `suppressVanilla` 改为 `false`）
+- 30 把"CS2 已含旧文件"的武器覆盖后，**实际听感**是否等于 CS:GO（脚本只证明文件/PCM 一致）
+- 5 把自带音频武器的实际听感（编译产物 PCM 与 CS:GO 原始 wav 逐字节一致，但没人试听过）
+- AK47 改用第一人称音效后的主观效果
+- 插件的 `Handled` 屏蔽是否**彻底无双音**；`Orig_` 事件重放的听感是否与 CS2 原版**完全**一致
+  （原版 452 消息可能携带 `sound_type` 等参数，`EmitSound` 无法完全复刻这些参数）
+- 距离/遮挡/回声等 3D 行为（字段逐行一致，但未实测）
+- `452` 消息的 `weapon_id` 无法当实体索引解析（实测值 `4276626` → 无效实体），
+  因此实际生效的是 `weapon_fire` FIFO 关联路径；该路径**未经实弹验证**
+  （没有玩家开火，无法验证定位与屏蔽）
 
-**未查证到的疑点：**
+**已知限制 / 疑点**
 
-- 除 AK47 外的 `volume` 值是按经验设的参考值（**AK47 那条是逐字段抄自 CS2 真实定义**），建议按听感微调
-- CS2 客户端是按 soundevent 名解析、还是按 `(weapon, sound_type)` 硬编码变体，未取得运行时证据；这决定了 addon 覆盖能否影响**开火者本人**听到的那一份
-- 空服休眠时 CSS 定时器不推进（实测心跳未触发），插件中依赖定时器的逻辑需有人在线
+- **USP（61）**：`items_game.txt` 里 `sound_single_shot` = `Weapon_USP.Single`（未消音版）。
+  玩家装着消音器开枪时 CS2 可能改用 `Weapon_USP.SilencedShot`（该事件**未**被 addon 覆盖）。
+  若把 USP 设为 `enabled=false`，消音射击会重放 `Orig_Weapon_USP.Single`（未消音版）→ 音色不对。
+  建议 USP 保持默认 `enabled=true`。
+- 远处听感走的是 `Weapon_XXX.SingleDistant`（指向 `*_distant.vsnd`），**本次未覆盖**（结构未变）。
+- `M4A1-S`（def 60，`Weapon_M4A1.Silenced`）、刀/手雷等**不在 35 把范围内**。
+- AK47 的 `Weapon_AK47.Single` 仍带 `soundevent_01 = "Weapon_AK47.SingleDistant"`（原版字段，未改）。
+- 编译产物目录里若残留旧的文本 `soundevents_addon.vsndevts`（非 `_c`），
+  发布时会被一起打包（无害，客户端只读 `_c`），建议发布前删掉保持整洁。
+- 空服休眠时 CSS 定时器不推进（实测），本插件**不依赖任何定时器**。
 
 ---
 
-## 六、复现方式
+## 七、复现与校验命令
 
 ```bash
-# 1) 列出 / 提取 VPK 内容
+# 1) 生成 + 校验文本
+node tools/build_full_addon.js gsw.txt tools/legacy_map_full.json addon/soundevents/soundevents_addon.vsndevts
+node tools/verify_full_addon.js addon/soundevents/soundevents_addon.vsndevts gsw.txt tools/legacy_map_full.json
+
+# 2) 校验编译产物（先 resourceinfo 转储）
+resourceinfo.exe -i <addon>/soundevents/soundevents_addon.vsndevts_c -all -baremode -game "<CS2>\game\csgo" > dump.txt
+node tools/verify_compiled_vsndevts.js dump.txt gsw.txt tools/legacy_map_full.json
+
+# 3) 生成 + 校验插件配置
+node tools/gen_config_full.js tools/legacy_map_full.json plugin/config.json
+node tools/verify_plugin_config.js plugin/config.json addon/soundevents/soundevents_addon.vsndevts \
+     docs/items_game_defindex.tsv tools/legacy_map_full.json
+
+# 4) 前期取证脚本（Python3）
 python3 tools/vpk.py list <pak01_dir.vpk> [子串过滤]
 python3 tools/vpk.py extract <pak01_dir.vpk> <内部路径> <输出文件>
-
-# 2) 比对 wav 与 vsnd_c 的 PCM
 python3 tools/cmp_audio.py <csgo.wav> <cs2.vsnd_c>
-
-# 3) 生成映射并逐项校验
-python3 tools/build_map.py  <csgo_game_sounds_weapons.txt> <cs2_weapons.txt> legacy_map.json
 python3 tools/verify_map.py legacy_map.json items_game.txt verified_map.json
-
-# 4) 生成 addon 覆盖文件与插件配置
-python3 tools/gen_addon.py  verified_map.json <addon>/soundevents
-python3 tools/gen_config.py verified_map.json items_game.txt config.json
 ```
 
-`build_map.py` 需要的 `csgo_game_sounds_weapons.txt` 取自 CS:GO DS 的
-`scripts/game_sounds_weapons.txt`（在 `pak01_dir.vpk` 内），
-`items_game.txt` 取自 CS2 的 `scripts/items/items_game.txt`。
+---
+
+## 八、说明
+
+- 仓库**不附带任何 Valve 音频/脚本文本**：5 个 wav 与 `gsw.txt` 需从自己的游戏安装提取（`tools/extract_sources.sh`）。
+- addon 里 5 把武器的音频与 `gsw.txt` 源自 CS:GO/CS2 游戏文件，版权归 Valve；
+  本项目只做 soundevent 引用替换与开关控制，供社区服务器使用。
+- 仅供社区服务器；官方匹配不加载第三方 Metamod 插件。
 
 ---
 
-## 七、说明
+## 九、历史记录
 
-- 本 addon **不附带任何音频文件**，只重新指向客户端已有的资源
-- 音效资产版权归 Valve；本项目仅修改 soundevent 的引用关系，供社区服务器使用
-- 仅供社区服务器；官方匹配不加载第三方 Metamod 插件
+<details>
+<summary>2026-10-13：初版只有 29/30 把、无 Orig_ 事件；kv3 结构踩坑；MultiAddonManager glibc 问题</summary>
 
----
+### 1. addon 文件结构（致命）⚠️
 
-## 八、重要更新（2026-10-13）
-
-### 1. addon 文件结构已修正 ⚠️
-
-初版 `soundevents_addon.vsndevts` 有两个**致命结构错误**，会导致 addon 完全不生效：
+初版 `soundevents_addon.vsndevts` 有两个会导致 addon **完全不生效**的错误：
 
 | 问题 | 初版（错误） | 修正后 |
 |------|-------------|--------|
 | 缺少 kv3 头 | 无 | `<!-- kv3 encoding:text:version{...} format:generic:version{...} -->` |
 | 根块 | `soundevents_addon = { ... }` | **匿名** `{ ... }` |
 
-现在的文件用 **CS2 真实的 `game_sounds_weapons.vsndevts` 逐字段重建**，
-只替换 `vsnd_files_track_01`，因此 `distance_volume_mapping_curve`、`occlusion_intensity`、
-`position_offset`、`broadcast_distance_override` 等**全部 3D/衰减/遮挡字段都保持原样**。
-
-生成脚本：`tools/build_faithful_addon.js`
-（需要 CS2 soundevents 的反编译转储作为输入，见下）
-
-```bash
-curl -sL https://raw.githubusercontent.com/Vauff/cs2_dumps/main/soundevents/game_sounds_weapons.vsndevts -o gsw.txt
-node tools/build_faithful_addon.js gsw.txt docs/verified_map.json addon/soundevents/soundevents_addon.vsndevts
-```
-
 ### 2. MultiAddonManager 在 Debian 12 上无法加载 🔴
-
-服务器实测：
 
 ```
 [META] Failed to load plugin addons/multiaddonmanager/bin/multiaddonmanager:
 /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found
 ```
 
-| 项目 | 值 |
-|------|-----|
-| 服务器系统 | Debian 12 (bookworm)，glibc **2.36** |
-| MultiAddonManager 要求 | 最高 **GLIBC_2.38** |
+服务器 Debian 12（glibc 2.36）装不了要求 glibc 2.38 的版本，需换旧版编译的 `.so`
+或升级系统。（后来已换用可用版本，`multiaddonmanager.cfg` 只推送 1 个 addon。）
 
-即该 `.so` 是用更新发行版编译的，**在 Debian 12 上根本加载不了**，
-所以仅配置 `multiaddonmanager.cfg` 不会生效。解决方向：
+### 3. 部分武器本来就没被 CS2 改
 
-1. 换用**较老的、在旧发行版上编译的** MultiAddonManager 版本（要求 glibc ≤ 2.36）
-2. 或把服务器升级到 Debian 13（glibc 2.41）
-3. 或改用 CS2 原生的 workshop collection 机制（`+host_workshop_collection`）
+`Weapon_XXX.Single` 若本来就指向同名旧文件，覆盖等于"无操作"——
+真正需要处理的是 CS2 换了音频引用的那些（如 AK47）。
 
-### 3. 一个需要留意的点：部分武器可能本来就没变
-
-CS2 的 `Weapon_XXX.Single` 若**本来**就指向那个同名旧文件（很多武器如此），
-则覆盖是"无操作"——因为 CS2 根本没改这些枪的声音。
-真正需要覆盖的是 **CS2 换了音频引用的那些**（如 AK47：原版指向 `ak47_01/02/04.vsnd`，
-而旧的 `ak47-1.vsnd` 未被引用）。
+</details>

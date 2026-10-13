@@ -1,0 +1,66 @@
+1	weapon_deagle	weapon_deagle_prefab	Weapon_DEagle.Single
+2	weapon_elite	weapon_elite_prefab	Weapon_Elite.Single
+3	weapon_fiveseven	weapon_fiveseven_prefab	Weapon_FiveSeven.Single
+4	weapon_glock	weapon_glock_prefab	Weapon_Glock.Single
+7	weapon_ak47	weapon_ak47_prefab	Weapon_AK47.Single
+8	weapon_aug	weapon_aug_prefab	Weapon_AUG.Single
+9	weapon_awp	weapon_awp_prefab	Weapon_AWP.Single
+10	weapon_famas	weapon_famas_prefab	Weapon_FAMAS.Single
+11	weapon_g3sg1	weapon_g3sg1_prefab	Weapon_G3SG1.Single
+13	weapon_galilar	weapon_galilar_prefab	Weapon_GalilAR.Single
+14	weapon_m249	weapon_m249_prefab	Weapon_M249.Single
+16	weapon_m4a1	weapon_m4a1_prefab	Weapon_M4A1.Single
+17	weapon_mac10	weapon_mac10_prefab	Weapon_MAC10.Single
+19	weapon_p90	weapon_p90_prefab	Weapon_P90.Single
+23	weapon_mp5sd	weapon_mp5sd_prefab	Weapon_MP5.Single
+24	weapon_ump45	weapon_ump45_prefab	Weapon_UMP45.Single
+25	weapon_xm1014	weapon_xm1014_prefab	Weapon_XM1014.Single
+26	weapon_bizon	weapon_bizon_prefab	Weapon_bizon.Single
+27	weapon_mag7	weapon_mag7_prefab	Weapon_Mag7.Single
+28	weapon_negev	weapon_negev_prefab	Weapon_Negev.Single
+29	weapon_sawedoff	weapon_sawedoff_prefab	Weapon_Sawedoff.Single
+30	weapon_tec9	weapon_tec9_prefab	Weapon_tec9.Single
+31	weapon_taser	weapon_taser_prefab	Weapon_Taser.Single
+32	weapon_hkp2000	weapon_hkp2000_prefab	Weapon_hkp2000.Single
+33	weapon_mp7	weapon_mp7_prefab	Weapon_MP7.Single
+34	weapon_mp9	weapon_mp9_prefab	Weapon_MP9.Single
+35	weapon_nova	weapon_nova_prefab	Weapon_Nova.Single
+36	weapon_p250	weapon_p250_prefab	Weapon_P250.Single
+38	weapon_scar20	weapon_scar20_prefab	Weapon_scar20.Single
+39	weapon_sg556	weapon_sg556_prefab	Weapon_SG556.Single
+40	weapon_ssg08	weapon_ssg08_prefab	Weapon_SSG08.Single
+41	weapon_knifegg	melee	Weapon_DEagle.Single
+42	weapon_knife	melee	Weapon_DEagle.Single
+43	weapon_flashbang	weapon_flashbang_prefab	Flashbang.Throw
+44	weapon_hegrenade	weapon_hegrenade_prefab	
+45	weapon_smokegrenade	weapon_smokegrenade_prefab	SmokeGrenade.Throw
+46	weapon_molotov	weapon_molotov_prefab	MolotovGrenade.Throw
+47	weapon_decoy	weapon_decoy_prefab	Decoy.Throw
+48	weapon_incgrenade	weapon_incgrenade_prefab	IncGrenade.Throw
+49	weapon_c4	c4	c4.plant
+57	weapon_healthshot	weapon_healthshot_prefab	c4.plant
+59	weapon_knife_t	melee	Weapon_DEagle.Single
+60	weapon_m4a1_silencer	weapon_m4a1_silencer_prefab	Weapon_M4A1.SilencedSingle
+61	weapon_usp_silencer	weapon_usp_silencer_prefab	Weapon_USP.Single
+63	weapon_cz75a	weapon_cz75a_prefab	Weapon_CZ75A.Single
+64	weapon_revolver	weapon_revolver_prefab	Weapon_Revolver.Single
+500	weapon_bayonet	melee_unusual	
+503	weapon_knife_css	melee_unusual	
+505	weapon_knife_flip	melee_unusual	
+506	weapon_knife_gut	melee_unusual	
+507	weapon_knife_karambit	melee_unusual	
+508	weapon_knife_m9_bayonet	melee_unusual	
+509	weapon_knife_tactical	melee_unusual	
+512	weapon_knife_falchion	melee_unusual	
+514	weapon_knife_survival_bowie	melee_unusual	
+515	weapon_knife_butterfly	melee_unusual	
+516	weapon_knife_push	melee_unusual	
+517	weapon_knife_cord	melee_unusual	
+518	weapon_knife_canis	melee_unusual	
+519	weapon_knife_ursus	melee_unusual	
+520	weapon_knife_gypsy_jackknife	melee_unusual	
+521	weapon_knife_outdoor	melee_unusual	
+522	weapon_knife_stiletto	melee_unusual	
+523	weapon_knife_widowmaker	melee_unusual	
+525	weapon_knife_skeleton	melee_unusual	
+526	weapon_knife_kukri	melee_unusual	

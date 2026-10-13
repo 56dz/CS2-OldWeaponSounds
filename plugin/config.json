@@ -1,216 +1,287 @@
 {
-  "enabled": false,
-  "replaceMode": "none",
-  "suppressVanilla": true,
+  "enabled": true,
   "debug": true,
-  "_说明": {
-    "replaceMode": "none=只诊断 | soundevent=播 soundevent(需挂载 addon，方位正确，推荐) | vsnd=直接播文件(无需 addon，但可能丢 3D 定位)",
-    "enabled": "总开关，默认 false（安全）。确认无误后改成 true，或用命令 css_oldws 1",
-    "suppressVanilla": "替换成功后是否屏蔽原版开火音，避免双重音"
-  },
   "weapons": {
-    "7": {
-      "name": "AK47",
-      "weapon_name": "weapon_ak47",
-      "vsnd": "sounds/weapons/ak47/ak47-1.vsnd",
-      "soundevent": "Weapon_AK47.Single",
-      "volume": 1.0
-    },
-    "8": {
-      "name": "AUG",
-      "weapon_name": "weapon_aug",
-      "vsnd": "sounds/weapons/aug/aug_01.vsnd",
-      "soundevent": "Weapon_AUG.Single",
-      "volume": 1.0
-    },
-    "9": {
-      "name": "AWP",
-      "weapon_name": "weapon_awp",
-      "vsnd": "sounds/weapons/awp/awp_01.vsnd",
-      "soundevent": "Weapon_AWP.Single",
-      "volume": 1.0
-    },
-    "63": {
-      "name": "CZ75A",
-      "weapon_name": "weapon_cz75a",
-      "vsnd": "sounds/weapons/cz75a/cz75_01.vsnd",
-      "soundevent": "Weapon_CZ75A.Single",
-      "volume": 1.0
-    },
     "1": {
       "name": "DEagle",
       "weapon_name": "weapon_deagle",
-      "vsnd": "sounds/weapons/deagle/deagle_01.vsnd",
-      "soundevent": "Weapon_DEagle.Single",
-      "volume": 1.0
+      "item_def_index": 1,
+      "legacy_event": "Weapon_DEagle.Single",
+      "orig_event": "Orig_Weapon_DEagle.Single",
+      "enabled": true
     },
     "2": {
       "name": "ELITE",
       "weapon_name": "weapon_elite",
-      "vsnd": "sounds/weapons/elite/elites_01.vsnd",
-      "soundevent": "Weapon_ELITE.Single",
-      "volume": 1.0
+      "item_def_index": 2,
+      "legacy_event": "Weapon_ELITE.Single",
+      "orig_event": "Orig_Weapon_ELITE.Single",
+      "enabled": true
     },
     "3": {
       "name": "FiveSeven",
       "weapon_name": "weapon_fiveseven",
-      "vsnd": "sounds/weapons/fiveseven/fiveseven_01.vsnd",
-      "soundevent": "Weapon_FiveSeven.Single",
-      "volume": 1.0
+      "item_def_index": 3,
+      "legacy_event": "Weapon_FiveSeven.Single",
+      "orig_event": "Orig_Weapon_FiveSeven.Single",
+      "enabled": true
+    },
+    "4": {
+      "name": "Glock",
+      "weapon_name": "weapon_glock",
+      "item_def_index": 4,
+      "legacy_event": "Weapon_Glock.Single",
+      "orig_event": "Orig_Weapon_Glock.Single",
+      "enabled": true
+    },
+    "7": {
+      "name": "AK47",
+      "weapon_name": "weapon_ak47",
+      "item_def_index": 7,
+      "legacy_event": "Weapon_AK47.Single",
+      "orig_event": "Orig_Weapon_AK47.Single",
+      "enabled": true
+    },
+    "8": {
+      "name": "AUG",
+      "weapon_name": "weapon_aug",
+      "item_def_index": 8,
+      "legacy_event": "Weapon_AUG.Single",
+      "orig_event": "Orig_Weapon_AUG.Single",
+      "enabled": true
+    },
+    "9": {
+      "name": "AWP",
+      "weapon_name": "weapon_awp",
+      "item_def_index": 9,
+      "legacy_event": "Weapon_AWP.Single",
+      "orig_event": "Orig_Weapon_AWP.Single",
+      "enabled": true
+    },
+    "10": {
+      "name": "FAMAS",
+      "weapon_name": "weapon_famas",
+      "item_def_index": 10,
+      "legacy_event": "Weapon_FAMAS.Single",
+      "orig_event": "Orig_Weapon_FAMAS.Single",
+      "enabled": true
     },
     "11": {
       "name": "G3SG1",
       "weapon_name": "weapon_g3sg1",
-      "vsnd": "sounds/weapons/g3sg1/g3sg1_01.vsnd",
-      "soundevent": "Weapon_G3SG1.Single",
-      "volume": 1.0
+      "item_def_index": 11,
+      "legacy_event": "Weapon_G3SG1.Single",
+      "orig_event": "Orig_Weapon_G3SG1.Single",
+      "enabled": true
+    },
+    "13": {
+      "name": "Galil",
+      "weapon_name": "weapon_galilar",
+      "item_def_index": 13,
+      "legacy_event": "Weapon_GalilAR.Single",
+      "orig_event": "Orig_Weapon_GalilAR.Single",
+      "enabled": true
     },
     "14": {
       "name": "M249",
       "weapon_name": "weapon_m249",
-      "vsnd": "sounds/weapons/m249/m249-1.vsnd",
-      "soundevent": "Weapon_M249.Single",
-      "volume": 1.0
+      "item_def_index": 14,
+      "legacy_event": "Weapon_M249.Single",
+      "orig_event": "Orig_Weapon_M249.Single",
+      "enabled": true
     },
     "16": {
       "name": "M4A1",
       "weapon_name": "weapon_m4a1",
-      "vsnd": "sounds/weapons/m4a1/m4a1_01.vsnd",
-      "soundevent": "Weapon_M4A1.Single",
-      "volume": 1.0
+      "item_def_index": 16,
+      "legacy_event": "Weapon_M4A1.Single",
+      "orig_event": "Orig_Weapon_M4A1.Single",
+      "enabled": true
     },
     "17": {
       "name": "MAC10",
       "weapon_name": "weapon_mac10",
-      "vsnd": "sounds/weapons/mac10/mac10_01.vsnd",
-      "soundevent": "Weapon_MAC10.Single",
-      "volume": 1.0
-    },
-    "23": {
-      "name": "MP5",
-      "weapon_name": "weapon_mp5sd",
-      "vsnd": "sounds/weapons/mp5/mp5_01.vsnd",
-      "soundevent": "Weapon_MP5.Single",
-      "volume": 1.0
-    },
-    "33": {
-      "name": "MP7",
-      "weapon_name": "weapon_mp7",
-      "vsnd": "sounds/weapons/mp7/mp7_01.vsnd",
-      "soundevent": "Weapon_MP7.Single",
-      "volume": 1.0
-    },
-    "34": {
-      "name": "MP9",
-      "weapon_name": "weapon_mp9",
-      "vsnd": "sounds/weapons/mp9/mp9_01.vsnd",
-      "soundevent": "Weapon_MP9.Single",
-      "volume": 1.0
-    },
-    "27": {
-      "name": "Mag7",
-      "weapon_name": "weapon_mag7",
-      "vsnd": "sounds/weapons/mag7/mag7_01.vsnd",
-      "soundevent": "Weapon_Mag7.Single",
-      "volume": 1.0
-    },
-    "28": {
-      "name": "Negev",
-      "weapon_name": "weapon_negev",
-      "vsnd": "sounds/weapons/negev/negev_01.vsnd",
-      "soundevent": "Weapon_Negev.Single",
-      "volume": 1.0
-    },
-    "35": {
-      "name": "Nova",
-      "weapon_name": "weapon_nova",
-      "vsnd": "sounds/weapons/nova/nova-1.vsnd",
-      "soundevent": "Weapon_Nova.Single",
-      "volume": 1.0
-    },
-    "36": {
-      "name": "P250",
-      "weapon_name": "weapon_p250",
-      "vsnd": "sounds/weapons/p250/p250_01.vsnd",
-      "soundevent": "Weapon_P250.Single",
-      "volume": 1.0
+      "item_def_index": 17,
+      "legacy_event": "Weapon_MAC10.Single",
+      "orig_event": "Orig_Weapon_MAC10.Single",
+      "enabled": true
     },
     "19": {
       "name": "P90",
       "weapon_name": "weapon_p90",
-      "vsnd": "sounds/weapons/p90/p90_01.vsnd",
-      "soundevent": "Weapon_P90.Single",
-      "volume": 1.0
+      "item_def_index": 19,
+      "legacy_event": "Weapon_P90.Single",
+      "orig_event": "Orig_Weapon_P90.Single",
+      "enabled": true
     },
-    "38": {
-      "name": "SCAR20",
-      "weapon_name": "weapon_scar20",
-      "vsnd": "sounds/weapons/scar20/scar20_01.vsnd",
-      "soundevent": "Weapon_SCAR20.Single",
-      "volume": 1.0
-    },
-    "40": {
-      "name": "SSG08",
-      "weapon_name": "weapon_ssg08",
-      "vsnd": "sounds/weapons/ssg08/ssg08_01.vsnd",
-      "soundevent": "Weapon_SSG08.Single",
-      "volume": 1.0
-    },
-    "29": {
-      "name": "Sawedoff",
-      "weapon_name": "weapon_sawedoff",
-      "vsnd": "sounds/weapons/sawedoff/sawedoff-1.vsnd",
-      "soundevent": "Weapon_Sawedoff.Single",
-      "volume": 1.0
-    },
-    "31": {
-      "name": "Taser",
-      "weapon_name": "weapon_taser",
-      "vsnd": "sounds/weapons/taser/taser_shoot.vsnd",
-      "soundevent": "Weapon_Taser.Single",
-      "volume": 1.0
+    "23": {
+      "name": "MP5",
+      "weapon_name": "weapon_mp5sd",
+      "item_def_index": 23,
+      "legacy_event": "Weapon_MP5.Single",
+      "orig_event": "Orig_Weapon_MP5.Single",
+      "enabled": true
     },
     "24": {
       "name": "UMP45",
       "weapon_name": "weapon_ump45",
-      "vsnd": "sounds/weapons/ump45/ump45_02.vsnd",
-      "soundevent": "Weapon_UMP45.Single",
-      "volume": 1.0
+      "item_def_index": 24,
+      "legacy_event": "Weapon_UMP45.Single",
+      "orig_event": "Orig_Weapon_UMP45.Single",
+      "enabled": true
     },
-    "61": {
-      "name": "USP",
-      "weapon_name": "weapon_usp_silencer",
-      "vsnd": "sounds/weapons/usp/usp_unsilenced_01.vsnd",
-      "soundevent": "Weapon_USP.Single",
-      "volume": 1.0
+    "25": {
+      "name": "XM1014",
+      "weapon_name": "weapon_xm1014",
+      "item_def_index": 25,
+      "legacy_event": "Weapon_XM1014.Single",
+      "orig_event": "Orig_Weapon_XM1014.Single",
+      "enabled": true
     },
     "26": {
       "name": "bizon",
       "weapon_name": "weapon_bizon",
-      "vsnd": "sounds/weapons/bizon/bizon_01.vsnd",
-      "soundevent": "Weapon_bizon.Single",
-      "volume": 1.0
+      "item_def_index": 26,
+      "legacy_event": "Weapon_bizon.Single",
+      "orig_event": "Orig_Weapon_bizon.Single",
+      "enabled": true
     },
-    "32": {
-      "name": "hkp2000",
-      "weapon_name": "weapon_hkp2000",
-      "vsnd": "sounds/weapons/hkp2000/hkp2000_01.vsnd",
-      "soundevent": "Weapon_hkp2000.Single",
-      "volume": 1.0
+    "27": {
+      "name": "Mag7",
+      "weapon_name": "weapon_mag7",
+      "item_def_index": 27,
+      "legacy_event": "Weapon_Mag7.Single",
+      "orig_event": "Orig_Weapon_Mag7.Single",
+      "enabled": true
     },
-    "39": {
-      "name": "sg556",
-      "weapon_name": "weapon_sg556",
-      "vsnd": "sounds/weapons/sg556/sg556_01.vsnd",
-      "soundevent": "Weapon_sg556.Single",
-      "volume": 1.0
+    "28": {
+      "name": "Negev",
+      "weapon_name": "weapon_negev",
+      "item_def_index": 28,
+      "legacy_event": "Weapon_Negev.Single",
+      "orig_event": "Orig_Weapon_Negev.Single",
+      "enabled": true
+    },
+    "29": {
+      "name": "Sawedoff",
+      "weapon_name": "weapon_sawedoff",
+      "item_def_index": 29,
+      "legacy_event": "Weapon_Sawedoff.Single",
+      "orig_event": "Orig_Weapon_Sawedoff.Single",
+      "enabled": true
     },
     "30": {
       "name": "tec9",
       "weapon_name": "weapon_tec9",
-      "vsnd": "sounds/weapons/tec9/tec9_02.vsnd",
-      "soundevent": "Weapon_tec9.Single",
-      "volume": 1.0
+      "item_def_index": 30,
+      "legacy_event": "Weapon_tec9.Single",
+      "orig_event": "Orig_Weapon_tec9.Single",
+      "enabled": true
+    },
+    "31": {
+      "name": "Taser",
+      "weapon_name": "weapon_taser",
+      "item_def_index": 31,
+      "legacy_event": "Weapon_Taser.Single",
+      "orig_event": "Orig_Weapon_Taser.Single",
+      "enabled": true
+    },
+    "32": {
+      "name": "hkp2000",
+      "weapon_name": "weapon_hkp2000",
+      "item_def_index": 32,
+      "legacy_event": "Weapon_hkp2000.Single",
+      "orig_event": "Orig_Weapon_hkp2000.Single",
+      "enabled": true
+    },
+    "33": {
+      "name": "MP7",
+      "weapon_name": "weapon_mp7",
+      "item_def_index": 33,
+      "legacy_event": "Weapon_MP7.Single",
+      "orig_event": "Orig_Weapon_MP7.Single",
+      "enabled": true
+    },
+    "34": {
+      "name": "MP9",
+      "weapon_name": "weapon_mp9",
+      "item_def_index": 34,
+      "legacy_event": "Weapon_MP9.Single",
+      "orig_event": "Orig_Weapon_MP9.Single",
+      "enabled": true
+    },
+    "35": {
+      "name": "Nova",
+      "weapon_name": "weapon_nova",
+      "item_def_index": 35,
+      "legacy_event": "Weapon_Nova.Single",
+      "orig_event": "Orig_Weapon_Nova.Single",
+      "enabled": true
+    },
+    "36": {
+      "name": "P250",
+      "weapon_name": "weapon_p250",
+      "item_def_index": 36,
+      "legacy_event": "Weapon_P250.Single",
+      "orig_event": "Orig_Weapon_P250.Single",
+      "enabled": true
+    },
+    "38": {
+      "name": "SCAR20",
+      "weapon_name": "weapon_scar20",
+      "item_def_index": 38,
+      "legacy_event": "Weapon_SCAR20.Single",
+      "orig_event": "Orig_Weapon_SCAR20.Single",
+      "enabled": true
+    },
+    "39": {
+      "name": "sg556",
+      "weapon_name": "weapon_sg556",
+      "item_def_index": 39,
+      "legacy_event": "Weapon_sg556.Single",
+      "orig_event": "Orig_Weapon_sg556.Single",
+      "enabled": true
+    },
+    "40": {
+      "name": "SSG08",
+      "weapon_name": "weapon_ssg08",
+      "item_def_index": 40,
+      "legacy_event": "Weapon_SSG08.Single",
+      "orig_event": "Orig_Weapon_SSG08.Single",
+      "enabled": true
+    },
+    "61": {
+      "name": "USP",
+      "weapon_name": "weapon_usp_silencer",
+      "item_def_index": 61,
+      "legacy_event": "Weapon_USP.Single",
+      "orig_event": "Orig_Weapon_USP.Single",
+      "enabled": true
+    },
+    "63": {
+      "name": "CZ75A",
+      "weapon_name": "weapon_cz75a",
+      "item_def_index": 63,
+      "legacy_event": "Weapon_CZ75A.Single",
+      "orig_event": "Orig_Weapon_CZ75A.Single",
+      "enabled": true
+    },
+    "64": {
+      "name": "Revolver",
+      "weapon_name": "weapon_revolver",
+      "item_def_index": 64,
+      "legacy_event": "Weapon_Revolver.Single",
+      "orig_event": "Orig_Weapon_Revolver.Single",
+      "enabled": true
+    },
+    "partyhorn": {
+      "name": "PartyHorn",
+      "weapon_name": "weapon_partyhorn",
+      "item_def_index": null,
+      "legacy_event": "Weapon_PartyHorn.Single",
+      "orig_event": "Orig_Weapon_PartyHorn.Single",
+      "enabled": true,
+      "note": "items_game.txt 中无此武器的 item_def_index，此项不会生效（addon 覆盖仍然有效）"
     }
   }
 }
