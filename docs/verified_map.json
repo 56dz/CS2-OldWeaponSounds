@@ -1,0 +1,182 @@
+{
+  "Weapon_AK47": {
+    "item_def_index": 7,
+    "vsnd": "sounds/weapons/ak47/ak47-1.vsnd",
+    "size": 288392,
+    "note": "3rd 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_AUG": {
+    "item_def_index": 8,
+    "vsnd": "sounds/weapons/aug/aug_01.vsnd",
+    "size": 452268,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_AWP": {
+    "item_def_index": 9,
+    "vsnd": "sounds/weapons/awp/awp_01.vsnd",
+    "size": 728364,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_CZ75A": {
+    "item_def_index": 63,
+    "vsnd": "sounds/weapons/cz75a/cz75_01.vsnd",
+    "size": 300688,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_DEagle": {
+    "item_def_index": 1,
+    "vsnd": "sounds/weapons/deagle/deagle_01.vsnd",
+    "size": 543352,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_ELITE": {
+    "item_def_index": 2,
+    "vsnd": "sounds/weapons/elite/elites_01.vsnd",
+    "size": 595352,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_FiveSeven": {
+    "item_def_index": 3,
+    "vsnd": "sounds/weapons/fiveseven/fiveseven_01.vsnd",
+    "size": 283004,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_G3SG1": {
+    "item_def_index": 11,
+    "vsnd": "sounds/weapons/g3sg1/g3sg1_01.vsnd",
+    "size": 470860,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_M249": {
+    "item_def_index": 14,
+    "vsnd": "sounds/weapons/m249/m249-1.vsnd",
+    "size": 325120,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_M4A1": {
+    "item_def_index": 16,
+    "vsnd": "sounds/weapons/m4a1/m4a1_01.vsnd",
+    "size": 563068,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_MAC10": {
+    "item_def_index": 17,
+    "vsnd": "sounds/weapons/mac10/mac10_01.vsnd",
+    "size": 351120,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_MP5": {
+    "item_def_index": null,
+    "vsnd": "sounds/weapons/mp5/mp5_01.vsnd",
+    "size": 249556,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_MP7": {
+    "item_def_index": 33,
+    "vsnd": "sounds/weapons/mp7/mp7_01.vsnd",
+    "size": 465844,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_MP9": {
+    "item_def_index": 34,
+    "vsnd": "sounds/weapons/mp9/mp9_01.vsnd",
+    "size": 299036,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_Mag7": {
+    "item_def_index": 27,
+    "vsnd": "sounds/weapons/mag7/mag7_01.vsnd",
+    "size": 529200,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_Negev": {
+    "item_def_index": 28,
+    "vsnd": "sounds/weapons/negev/negev_01.vsnd",
+    "size": 743440,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_Nova": {
+    "item_def_index": 35,
+    "vsnd": "sounds/weapons/nova/nova-1.vsnd",
+    "size": 503216,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_P250": {
+    "item_def_index": 36,
+    "vsnd": "sounds/weapons/p250/p250_01.vsnd",
+    "size": 325028,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_P90": {
+    "item_def_index": 19,
+    "vsnd": "sounds/weapons/p90/p90_01.vsnd",
+    "size": 258224,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_PartyHorn": {
+    "item_def_index": null,
+    "vsnd": "sounds/weapons/party_horn_01.vsnd",
+    "size": 415226,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_SCAR20": {
+    "item_def_index": 38,
+    "vsnd": "sounds/weapons/scar20/scar20_01.vsnd",
+    "size": 573300,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_SSG08": {
+    "item_def_index": 40,
+    "vsnd": "sounds/weapons/ssg08/ssg08_01.vsnd",
+    "size": 396900,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_Sawedoff": {
+    "item_def_index": 29,
+    "vsnd": "sounds/weapons/sawedoff/sawedoff-1.vsnd",
+    "size": 493368,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_Taser": {
+    "item_def_index": 31,
+    "vsnd": "sounds/weapons/taser/taser_shoot.vsnd",
+    "size": 257404,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_UMP45": {
+    "item_def_index": 24,
+    "vsnd": "sounds/weapons/ump45/ump45_02.vsnd",
+    "size": 368632,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_USP": {
+    "item_def_index": null,
+    "vsnd": "sounds/weapons/usp/usp_unsilenced_01.vsnd",
+    "size": 370560,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_bizon": {
+    "item_def_index": 26,
+    "vsnd": "sounds/weapons/bizon/bizon_01.vsnd",
+    "size": 268660,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_hkp2000": {
+    "item_def_index": 32,
+    "vsnd": "sounds/weapons/hkp2000/hkp2000_01.vsnd",
+    "size": 385876,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_sg556": {
+    "item_def_index": 39,
+    "vsnd": "sounds/weapons/sg556/sg556_01.vsnd",
+    "size": 399568,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  },
+  "Weapon_tec9": {
+    "item_def_index": 30,
+    "vsnd": "sounds/weapons/tec9/tec9_02.vsnd",
+    "size": 446772,
+    "note": "1st 音效，CS2 客户端已含且 PCM 与 CS:GO 一致"
+  }
+}

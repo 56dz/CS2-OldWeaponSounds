@@ -1,0 +1,216 @@
+{
+  "enabled": false,
+  "replaceMode": "none",
+  "suppressVanilla": true,
+  "debug": true,
+  "_说明": {
+    "replaceMode": "none=只诊断 | soundevent=播 soundevent(需挂载 addon，方位正确，推荐) | vsnd=直接播文件(无需 addon，但可能丢 3D 定位)",
+    "enabled": "总开关，默认 false（安全）。确认无误后改成 true，或用命令 css_oldws 1",
+    "suppressVanilla": "替换成功后是否屏蔽原版开火音，避免双重音"
+  },
+  "weapons": {
+    "7": {
+      "name": "AK47",
+      "weapon_name": "weapon_ak47",
+      "vsnd": "sounds/weapons/ak47/ak47-1.vsnd",
+      "soundevent": "Weapon_AK47.Single",
+      "volume": 1.0
+    },
+    "8": {
+      "name": "AUG",
+      "weapon_name": "weapon_aug",
+      "vsnd": "sounds/weapons/aug/aug_01.vsnd",
+      "soundevent": "Weapon_AUG.Single",
+      "volume": 1.0
+    },
+    "9": {
+      "name": "AWP",
+      "weapon_name": "weapon_awp",
+      "vsnd": "sounds/weapons/awp/awp_01.vsnd",
+      "soundevent": "Weapon_AWP.Single",
+      "volume": 1.0
+    },
+    "63": {
+      "name": "CZ75A",
+      "weapon_name": "weapon_cz75a",
+      "vsnd": "sounds/weapons/cz75a/cz75_01.vsnd",
+      "soundevent": "Weapon_CZ75A.Single",
+      "volume": 1.0
+    },
+    "1": {
+      "name": "DEagle",
+      "weapon_name": "weapon_deagle",
+      "vsnd": "sounds/weapons/deagle/deagle_01.vsnd",
+      "soundevent": "Weapon_DEagle.Single",
+      "volume": 1.0
+    },
+    "2": {
+      "name": "ELITE",
+      "weapon_name": "weapon_elite",
+      "vsnd": "sounds/weapons/elite/elites_01.vsnd",
+      "soundevent": "Weapon_ELITE.Single",
+      "volume": 1.0
+    },
+    "3": {
+      "name": "FiveSeven",
+      "weapon_name": "weapon_fiveseven",
+      "vsnd": "sounds/weapons/fiveseven/fiveseven_01.vsnd",
+      "soundevent": "Weapon_FiveSeven.Single",
+      "volume": 1.0
+    },
+    "11": {
+      "name": "G3SG1",
+      "weapon_name": "weapon_g3sg1",
+      "vsnd": "sounds/weapons/g3sg1/g3sg1_01.vsnd",
+      "soundevent": "Weapon_G3SG1.Single",
+      "volume": 1.0
+    },
+    "14": {
+      "name": "M249",
+      "weapon_name": "weapon_m249",
+      "vsnd": "sounds/weapons/m249/m249-1.vsnd",
+      "soundevent": "Weapon_M249.Single",
+      "volume": 1.0
+    },
+    "16": {
+      "name": "M4A1",
+      "weapon_name": "weapon_m4a1",
+      "vsnd": "sounds/weapons/m4a1/m4a1_01.vsnd",
+      "soundevent": "Weapon_M4A1.Single",
+      "volume": 1.0
+    },
+    "17": {
+      "name": "MAC10",
+      "weapon_name": "weapon_mac10",
+      "vsnd": "sounds/weapons/mac10/mac10_01.vsnd",
+      "soundevent": "Weapon_MAC10.Single",
+      "volume": 1.0
+    },
+    "23": {
+      "name": "MP5",
+      "weapon_name": "weapon_mp5sd",
+      "vsnd": "sounds/weapons/mp5/mp5_01.vsnd",
+      "soundevent": "Weapon_MP5.Single",
+      "volume": 1.0
+    },
+    "33": {
+      "name": "MP7",
+      "weapon_name": "weapon_mp7",
+      "vsnd": "sounds/weapons/mp7/mp7_01.vsnd",
+      "soundevent": "Weapon_MP7.Single",
+      "volume": 1.0
+    },
+    "34": {
+      "name": "MP9",
+      "weapon_name": "weapon_mp9",
+      "vsnd": "sounds/weapons/mp9/mp9_01.vsnd",
+      "soundevent": "Weapon_MP9.Single",
+      "volume": 1.0
+    },
+    "27": {
+      "name": "Mag7",
+      "weapon_name": "weapon_mag7",
+      "vsnd": "sounds/weapons/mag7/mag7_01.vsnd",
+      "soundevent": "Weapon_Mag7.Single",
+      "volume": 1.0
+    },
+    "28": {
+      "name": "Negev",
+      "weapon_name": "weapon_negev",
+      "vsnd": "sounds/weapons/negev/negev_01.vsnd",
+      "soundevent": "Weapon_Negev.Single",
+      "volume": 1.0
+    },
+    "35": {
+      "name": "Nova",
+      "weapon_name": "weapon_nova",
+      "vsnd": "sounds/weapons/nova/nova-1.vsnd",
+      "soundevent": "Weapon_Nova.Single",
+      "volume": 1.0
+    },
+    "36": {
+      "name": "P250",
+      "weapon_name": "weapon_p250",
+      "vsnd": "sounds/weapons/p250/p250_01.vsnd",
+      "soundevent": "Weapon_P250.Single",
+      "volume": 1.0
+    },
+    "19": {
+      "name": "P90",
+      "weapon_name": "weapon_p90",
+      "vsnd": "sounds/weapons/p90/p90_01.vsnd",
+      "soundevent": "Weapon_P90.Single",
+      "volume": 1.0
+    },
+    "38": {
+      "name": "SCAR20",
+      "weapon_name": "weapon_scar20",
+      "vsnd": "sounds/weapons/scar20/scar20_01.vsnd",
+      "soundevent": "Weapon_SCAR20.Single",
+      "volume": 1.0
+    },
+    "40": {
+      "name": "SSG08",
+      "weapon_name": "weapon_ssg08",
+      "vsnd": "sounds/weapons/ssg08/ssg08_01.vsnd",
+      "soundevent": "Weapon_SSG08.Single",
+      "volume": 1.0
+    },
+    "29": {
+      "name": "Sawedoff",
+      "weapon_name": "weapon_sawedoff",
+      "vsnd": "sounds/weapons/sawedoff/sawedoff-1.vsnd",
+      "soundevent": "Weapon_Sawedoff.Single",
+      "volume": 1.0
+    },
+    "31": {
+      "name": "Taser",
+      "weapon_name": "weapon_taser",
+      "vsnd": "sounds/weapons/taser/taser_shoot.vsnd",
+      "soundevent": "Weapon_Taser.Single",
+      "volume": 1.0
+    },
+    "24": {
+      "name": "UMP45",
+      "weapon_name": "weapon_ump45",
+      "vsnd": "sounds/weapons/ump45/ump45_02.vsnd",
+      "soundevent": "Weapon_UMP45.Single",
+      "volume": 1.0
+    },
+    "61": {
+      "name": "USP",
+      "weapon_name": "weapon_usp_silencer",
+      "vsnd": "sounds/weapons/usp/usp_unsilenced_01.vsnd",
+      "soundevent": "Weapon_USP.Single",
+      "volume": 1.0
+    },
+    "26": {
+      "name": "bizon",
+      "weapon_name": "weapon_bizon",
+      "vsnd": "sounds/weapons/bizon/bizon_01.vsnd",
+      "soundevent": "Weapon_bizon.Single",
+      "volume": 1.0
+    },
+    "32": {
+      "name": "hkp2000",
+      "weapon_name": "weapon_hkp2000",
+      "vsnd": "sounds/weapons/hkp2000/hkp2000_01.vsnd",
+      "soundevent": "Weapon_hkp2000.Single",
+      "volume": 1.0
+    },
+    "39": {
+      "name": "sg556",
+      "weapon_name": "weapon_sg556",
+      "vsnd": "sounds/weapons/sg556/sg556_01.vsnd",
+      "soundevent": "Weapon_sg556.Single",
+      "volume": 1.0
+    },
+    "30": {
+      "name": "tec9",
+      "weapon_name": "weapon_tec9",
+      "vsnd": "sounds/weapons/tec9/tec9_02.vsnd",
+      "soundevent": "Weapon_tec9.Single",
+      "volume": 1.0
+    }
+  }
+}

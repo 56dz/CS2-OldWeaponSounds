@@ -1,0 +1,331 @@
+// CS2 旧版（CS:GO）枪声覆盖 —— 由自动化脚本生成
+// 原理：把原版 soundevent 重新指向 CS2 客户端中已存在的 CS:GO 原版 .vsnd 文件
+//      这些文件已随 CS2 分发（PCM 与 CS:GO 逐字节一致），因此本 addon 无需附带任何音频文件
+// 放置位置：<addon>/soundevents/soundevents_addon.vsndevts
+
+soundevents_addon =
+{
+
+	Weapon_AK47.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.100000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/ak47/ak47-1.vsnd",
+		]
+		metadata = [ "meta", "rifle", ]
+	}
+
+	Weapon_AUG.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/aug/aug_01.vsnd",
+		]
+	}
+
+	Weapon_AWP.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.400000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/awp/awp_01.vsnd",
+		]
+		metadata = [ "meta", "sniper_rifle", ]
+	}
+
+	Weapon_CZ75A.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/cz75a/cz75_01.vsnd",
+		]
+	}
+
+	Weapon_DEagle.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/deagle/deagle_01.vsnd",
+		]
+		metadata = [ "meta", "pistol", ]
+	}
+
+	Weapon_ELITE.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/elite/elites_01.vsnd",
+		]
+	}
+
+	Weapon_FiveSeven.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/fiveseven/fiveseven_01.vsnd",
+		]
+	}
+
+	Weapon_G3SG1.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/g3sg1/g3sg1_01.vsnd",
+		]
+	}
+
+	Weapon_M249.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/m249/m249-1.vsnd",
+		]
+	}
+
+	Weapon_M4A1.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/m4a1/m4a1_01.vsnd",
+		]
+		metadata = [ "meta", "rifle", ]
+	}
+
+	Weapon_MAC10.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/mac10/mac10_01.vsnd",
+		]
+	}
+
+	Weapon_MP5.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/mp5/mp5_01.vsnd",
+		]
+	}
+
+	Weapon_MP7.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/mp7/mp7_01.vsnd",
+		]
+	}
+
+	Weapon_MP9.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/mp9/mp9_01.vsnd",
+		]
+	}
+
+	Weapon_Mag7.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/mag7/mag7_01.vsnd",
+		]
+	}
+
+	Weapon_Negev.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/negev/negev_01.vsnd",
+		]
+	}
+
+	Weapon_Nova.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/nova/nova-1.vsnd",
+		]
+	}
+
+	Weapon_P250.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/p250/p250_01.vsnd",
+		]
+	}
+
+	Weapon_P90.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/p90/p90_01.vsnd",
+		]
+	}
+
+	Weapon_SCAR20.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/scar20/scar20_01.vsnd",
+		]
+	}
+
+	Weapon_SSG08.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/ssg08/ssg08_01.vsnd",
+		]
+	}
+
+	Weapon_Sawedoff.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/sawedoff/sawedoff-1.vsnd",
+		]
+	}
+
+	Weapon_Taser.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/taser/taser_shoot.vsnd",
+		]
+	}
+
+	Weapon_UMP45.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/ump45/ump45_02.vsnd",
+		]
+	}
+
+	Weapon_USP.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/usp/usp_unsilenced_01.vsnd",
+		]
+	}
+
+	Weapon_bizon.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/bizon/bizon_01.vsnd",
+		]
+	}
+
+	Weapon_hkp2000.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/hkp2000/hkp2000_01.vsnd",
+		]
+	}
+
+	Weapon_sg556.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/sg556/sg556_01.vsnd",
+		]
+	}
+
+	Weapon_tec9.Single =
+	{
+		type = "csgo_mega"
+		volume = 1.000000
+		mixgroup = "Weapons"
+		vsnd_files_track_01 =
+		[
+			"sounds/weapons/tec9/tec9_02.vsnd",
+		]
+	}
+}
