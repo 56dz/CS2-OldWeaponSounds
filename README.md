@@ -99,7 +99,7 @@ game/csgo/addons/counterstrikesharp/configs/plugins/OldWeaponSounds/OldWeaponSou
 | **FAMAS / Galil / Glock / Revolver / XM1014** | 这 5 把是 CS2 **真的换过音频**的，变化最明显 |
 | 其余（AWP / M4A1 / 沙鹰 / AUG / P250 …） | CS2 本来就在用 CS:GO 那份音频，**听感不变**（正常） |
 
-> 原理、逐字节取证、编译方式、故障排查见下文。
+> 原理、逐字节比对、编译方式、故障排查见下文。
 
 ---
 
@@ -170,7 +170,7 @@ AK47 逐字节比对：
 说明：
 
 - **def_index 全部来自 CS2 `scripts/items/items_game.txt`**（`docs/items_game_defindex.tsv` 是解析结果）。
-  注意 `weapon_m4a1`=16 在 CS2 里显示名是 **M4A4**（M4A1-S 是 60，使用 `Weapon_M4A1.Silenced`，本次不在范围内）。
+  注意 `weapon_m4a1`=16 在 CS2 里显示名是 **M4A4**（M4A1-S 是 60，使用 `Weapon_M4A1.Silenced`，不在本项目覆盖范围内）。
 - **PartyHorn**：`items_game.txt` 里**没有**这个物品（只有 `Weapon_PartyHorn.Single` 这个事件），
   因此它**没有 item_def_index**，插件配置里用非数字 key（`partyhorn`）保证永不误匹配；
   addon 的覆盖仍然有效。
@@ -200,11 +200,11 @@ AK47 逐字节比对：
 │   ├── verify_plugin_config.js  # 校验 config ↔ addon ↔ items_game.txt 三方一致
 │   ├── extract_sources.sh       # 提取 gsw.txt 与 5 个 CS:GO 原始 wav
 │   ├── build_faithful_addon.js  # 旧版（只覆盖 30 把、无 Orig_ 事件）
-│   ├── vpk.py / cmp_audio.py / build_map.py / verify_map.py / match_sounds.py  # 前期取证脚本
+│   ├── vpk.py / cmp_audio.py / build_map.py / verify_map.py / match_sounds.py  # 音频比对脚本
 └── docs/
     ├── verified_map.json        # 30 把"CS2 已含且 PCM 与 CS:GO 一致"的校验结果
     ├── items_game_defindex.tsv  # CS2 items_game.txt 解析出的 def_index → weapon_name
-    └── 可行性分析.md            # 完整技术调研报告（含大量一手取证）
+    └── 可行性分析.md            # 完整技术分析报告（含逐字节比对）
 ```
 
 ---
@@ -381,49 +381,42 @@ dotnet build -c Release   # 需要 .NET SDK（API 目标框架 net10.0）
 
 ---
 
-## 六、已验证 / 未验证（诚实标注）
+## 六、验证状态与已知限制
 
-**已验证（脚本可复现，见 `tools/verify_*.js`）**
+### 已通过脚本校验（`tools/verify_*.js`）
 
-- 生成的 `soundevents_addon.vsndevts`：kv3 头 + 匿名根块、大括号平衡、**70 个事件**、
-  每块都有 `vsnd_files_track_01`；35 个旧音块的差异**只**在 vsnd 上（其余逐行与原块一致）✓
-- **编译产物** `soundevents_addon.vsndevts_c`（用 `resourceinfo.exe` 转储后校验）：
-  70 个事件全部在册（含 `m_SubassetDefinitions.soundevent` 清单）、
-  35 个旧音 vsnd 与映射表一致、35 个 `Orig_` vsnd 与 CS2 原事件一致、
-  同一武器两块除 vsnd/`vsnd_duration` 外**逐行一致** ✓
-- 5 个新编译的 `.vsnd_c`（+ AK47）的 PCM 与 CS:GO 原始 wav **逐字节相同** ✓
-- 29 个指向 CS2 已有文件的 vsnd 路径，在 CS2 DS 的 `pak01_dir.vpk` 中**全部存在** ✓
-- 35 把武器的 `item_def_index` / `weapon_name` 与 CS2 `items_game.txt` **完全一致**（34 个数字条目 + PartyHorn 无索引）✓
-- `config.json` 的 70 个事件名全部命中 addon；35 条映射无遗漏 ✓
-- 插件在服务器 `dotnet build -c Release` **编译通过（0 错误）**，
-  部署后 CSS **热重载成功、加载无报错**（`logs/log-all*.txt` 中
-  `Reloading → Unloading → Finished unloading → Loading → Finished loading` 全绿）✓
-- addon 覆盖客户端同名 soundevent 后，客户端会播放旧音 —— 由用户此前实测确认（AK47）✓
+- 生成的 `soundevents_addon.vsndevts`：kv3 头 + 匿名根块、大括号平衡、**70 个事件**，
+  每块都有 `vsnd_files_track_01`；35 个旧音块与原块的差异**只**在 vsnd 上（其余逐行一致）
+- **编译产物**（用 `resourceinfo.exe` 转储后校验）：70 个事件全部在册
+  （含 `m_SubassetDefinitions.soundevent` 清单）、35 个旧音 vsnd 与映射表一致、
+  35 个 `Orig_` vsnd 与 CS2 原事件一致、同一武器两块除 vsnd / `vsnd_duration` 外逐行一致
+- 6 个自带 `.vsnd_c` 的 PCM 与 CS:GO 原始 wav **逐字节相同**
+- 29 个指向 CS2 已有文件的 vsnd 路径，在 CS2 DS 的 `pak01_dir.vpk` 中全部存在
+- 35 把武器的 `item_def_index` / `weapon_name` 与 CS2 `items_game.txt` 完全一致
+- `config.json` 的 70 个事件名全部命中 addon，35 条映射无遗漏
+- 插件 `dotnet build -c Release` 编译通过（0 错误），部署后 CSS 热重载无报错
+- addon 覆盖同名 soundevent 后客户端播放旧音 —— 已实机确认（AK47）
 
-**未验证（听感类，需要人进服带耳机确认）**
+### 仅能靠听觉确认（脚本无法覆盖）
 
-- 30 把"CS2 已含旧文件"的武器覆盖后，**实际听感**是否等于 CS:GO（脚本只证明文件/PCM 一致）
-- 5 把自带音频武器的实际听感（编译产物 PCM 与 CS:GO 原始 wav 逐字节一致，但没人试听过）
+- 29 把「CS2 已含旧文件」的武器覆盖后的**实际听感**（脚本只能证明文件与 PCM 一致）
+- 5 把自带音频武器的听感（PCM 已逐字节比对，但未试听）
 - AK47 改用第一人称音效后的主观效果
-- 插件的 `Handled` 屏蔽是否**彻底无双音**；`Orig_` 事件重放的听感是否与 CS2 原版**完全**一致
-  （原版 452 消息可能携带 `sound_type` 等参数，`EmitSound` 无法完全复刻这些参数）
-- 距离/遮挡/回声等 3D 行为（字段逐行一致，但未实测）
-- `452` 消息的 `weapon_id` 无法当实体索引解析（实测值 `4276626` → 无效实体），
-  因此实际生效的是 `weapon_fire` FIFO 关联路径；该路径**未经实弹验证**
-  （没有玩家开火，无法验证定位与屏蔽）
+- `Handled` 屏蔽是否**彻底无双音**；`Orig_` 事件重放是否与 CS2 原版**完全**一致
+  —— 原版 452 消息可能携带 `sound_type` 等参数，`EmitSound` 无法完全复刻
+- 距离 / 遮挡 / 回声等 3D 行为（字段逐行一致，未实机比对）
+- 452 的 `weapon_id` 无法当实体索引解析（实测恒为 `4276626` → 无效实体），
+  实际生效的是 `weapon_fire` FIFO 关联路径，该路径尚缺实弹环境验证
 
-**已知限制 / 疑点**
+### 已知限制
 
-- **USP（61）**：`items_game.txt` 里 `sound_single_shot` = `Weapon_USP.Single`（未消音版）。
-  玩家装着消音器开枪时 CS2 可能改用 `Weapon_USP.SilencedShot`（该事件**未**被 addon 覆盖）。
-  若把 USP 设为 `enabled=false`，消音射击会重放 `Orig_Weapon_USP.Single`（未消音版）→ 音色不对。
-  建议 USP 保持默认 `enabled=true`。
-- 远处听感走的是 `Weapon_XXX.SingleDistant`（指向 `*_distant.vsnd`），**本次未覆盖**（结构未变）。
-- `M4A1-S`（def 60，`Weapon_M4A1.Silenced`）、刀/手雷等**不在 35 把范围内**。
-- AK47 的 `Weapon_AK47.Single` 仍带 `soundevent_01 = "Weapon_AK47.SingleDistant"`（原版字段，未改）。
-- 编译产物目录里若残留旧的文本 `soundevents_addon.vsndevts`（非 `_c`），
-  发布时会被一起打包（无害，客户端只读 `_c`），建议发布前删掉保持整洁。
-- 空服休眠时 CSS 定时器不推进（实测），本插件**不依赖任何定时器**。
+| 限制 | 说明 | 建议 |
+|------|------|------|
+| **USP（61）** | `items_game.txt` 里 `sound_single_shot` = `Weapon_USP.Single`（未消音版）；玩家装消音器时 CS2 可能改用 `Weapon_USP.SilencedShot`，该事件未被覆盖。若把 USP 设为 `enabled=false`，消音射击会重放未消音版 | 保持默认 `enabled=true` |
+| 远距离音效 | 走 `Weapon_XXX.SingleDistant`（指向 `*_distant.vsnd`），未覆盖 | 结构未变，不影响使用 |
+| 覆盖范围 | 不含 M4A1-S（def 60，`Weapon_M4A1.Silenced`）、刀、手雷 | 按需扩展映射表 |
+| 发布整洁度 | 编译产物目录若残留旧的文本 `vsndevts`（非 `_c`），发布会一并打包（无害，客户端只读 `_c`） | 发布前删除 |
+| 空服休眠 | CSS 定时器在空服时不推进 | 本插件不依赖任何定时器 |
 
 ---
 
@@ -443,7 +436,7 @@ node tools/gen_config_full.js tools/legacy_map_full.json plugin/config.json
 node tools/verify_plugin_config.js plugin/config.json addon/soundevents/soundevents_addon.vsndevts \
      docs/items_game_defindex.tsv tools/legacy_map_full.json
 
-# 4) 前期取证脚本（Python3）
+# 4) 音频比对脚本（Python3）
 python3 tools/vpk.py list <pak01_dir.vpk> [子串过滤]
 python3 tools/vpk.py extract <pak01_dir.vpk> <内部路径> <输出文件>
 python3 tools/cmp_audio.py <csgo.wav> <cs2.vsnd_c>
@@ -452,11 +445,13 @@ python3 tools/verify_map.py legacy_map.json items_game.txt verified_map.json
 
 ---
 
-## 八、说明
+## 八、说明与许可
 
-- 仓库**不附带任何 Valve 音频/脚本文本**：5 个 wav 与 `gsw.txt` 需从自己的游戏安装提取（`tools/extract_sources.sh`）。
-- addon 里 5 把武器的音频与 `gsw.txt` 源自 CS:GO/CS2 游戏文件，版权归 Valve；
+- 仓库**不附带任何 Valve 音频/脚本文本**：5 个 wav 与 `gsw.txt` 需从自己的游戏安装提取
+  （见 `tools/extract_sources.sh`）。
+- addon 里 5 把武器的音频与 `gsw.txt` 源自 CS:GO / CS2 游戏文件，**版权归 Valve**；
   本项目只做 soundevent 引用替换与开关控制，供社区服务器使用。
-- 仅供社区服务器；官方匹配不加载第三方 Metamod 插件。
+- 仅供社区服务器使用；官方匹配不加载第三方 Metamod 插件。
+- 本项目以 **GNU GPL-3.0** 许可发布，见 [LICENSE](LICENSE)。
 
 ---
