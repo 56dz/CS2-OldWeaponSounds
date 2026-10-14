@@ -78,6 +78,10 @@ public class OldWeaponSoundsPlugin : BasePlugin
     private const long MaxLogBytes = 2 * 1024 * 1024;
 
     private static readonly object FileLock = new();
+
+    /// <summary>写文件不带 BOM：避免用户用编辑器/其它 JSON 工具打开配置时报错。</summary>
+    private static readonly UTF8Encoding Utf8NoBom = new(false);
+
     private static string _logPath = "";
 
     private RootCfg _cfg = new();
@@ -124,18 +128,61 @@ public class OldWeaponSoundsPlugin : BasePlugin
         try
         {
             lock (FileLock)
-                File.AppendAllText(_logPath, $"[{DateTime.Now:HH:mm:ss.fff}] {msg}{Environment.NewLine}", Encoding.UTF8);
+                File.AppendAllText(_logPath, $"[{DateTime.Now:HH:mm:ss.fff}] {msg}{Environment.NewLine}", Utf8NoBom);
         }
         catch { }
     }
 
+    /// <summary>
+    /// 内建的默认武器表（35 把）。
+    /// 由 tools/gen_defaults_cs.js 从 plugin/config.json 生成，请勿手工编辑。
+    /// 作用：只部署插件（不带 config.json）时，也能在惯例位置生成**完整**的默认配置。
+    /// </summary>
+    private static Dictionary<string, WeaponCfg> BuildDefaultWeapons() => new()
+    {
+        ["1"] = new WeaponCfg { name = "DEagle", weapon_name = "weapon_deagle", item_def_index = 1, legacy_event = "Weapon_DEagle.Single", orig_event = "Orig_Weapon_DEagle.Single", enabled = true },
+        ["2"] = new WeaponCfg { name = "ELITE", weapon_name = "weapon_elite", item_def_index = 2, legacy_event = "Weapon_ELITE.Single", orig_event = "Orig_Weapon_ELITE.Single", enabled = true },
+        ["3"] = new WeaponCfg { name = "FiveSeven", weapon_name = "weapon_fiveseven", item_def_index = 3, legacy_event = "Weapon_FiveSeven.Single", orig_event = "Orig_Weapon_FiveSeven.Single", enabled = true },
+        ["4"] = new WeaponCfg { name = "Glock", weapon_name = "weapon_glock", item_def_index = 4, legacy_event = "Weapon_Glock.Single", orig_event = "Orig_Weapon_Glock.Single", enabled = true },
+        ["7"] = new WeaponCfg { name = "AK47", weapon_name = "weapon_ak47", item_def_index = 7, legacy_event = "Weapon_AK47.Single", orig_event = "Orig_Weapon_AK47.Single", enabled = true },
+        ["8"] = new WeaponCfg { name = "AUG", weapon_name = "weapon_aug", item_def_index = 8, legacy_event = "Weapon_AUG.Single", orig_event = "Orig_Weapon_AUG.Single", enabled = true },
+        ["9"] = new WeaponCfg { name = "AWP", weapon_name = "weapon_awp", item_def_index = 9, legacy_event = "Weapon_AWP.Single", orig_event = "Orig_Weapon_AWP.Single", enabled = true },
+        ["10"] = new WeaponCfg { name = "FAMAS", weapon_name = "weapon_famas", item_def_index = 10, legacy_event = "Weapon_FAMAS.Single", orig_event = "Orig_Weapon_FAMAS.Single", enabled = true },
+        ["11"] = new WeaponCfg { name = "G3SG1", weapon_name = "weapon_g3sg1", item_def_index = 11, legacy_event = "Weapon_G3SG1.Single", orig_event = "Orig_Weapon_G3SG1.Single", enabled = true },
+        ["13"] = new WeaponCfg { name = "Galil", weapon_name = "weapon_galilar", item_def_index = 13, legacy_event = "Weapon_GalilAR.Single", orig_event = "Orig_Weapon_GalilAR.Single", enabled = true },
+        ["14"] = new WeaponCfg { name = "M249", weapon_name = "weapon_m249", item_def_index = 14, legacy_event = "Weapon_M249.Single", orig_event = "Orig_Weapon_M249.Single", enabled = true },
+        ["16"] = new WeaponCfg { name = "M4A1", weapon_name = "weapon_m4a1", item_def_index = 16, legacy_event = "Weapon_M4A1.Single", orig_event = "Orig_Weapon_M4A1.Single", enabled = true },
+        ["17"] = new WeaponCfg { name = "MAC10", weapon_name = "weapon_mac10", item_def_index = 17, legacy_event = "Weapon_MAC10.Single", orig_event = "Orig_Weapon_MAC10.Single", enabled = true },
+        ["19"] = new WeaponCfg { name = "P90", weapon_name = "weapon_p90", item_def_index = 19, legacy_event = "Weapon_P90.Single", orig_event = "Orig_Weapon_P90.Single", enabled = true },
+        ["23"] = new WeaponCfg { name = "MP5", weapon_name = "weapon_mp5sd", item_def_index = 23, legacy_event = "Weapon_MP5.Single", orig_event = "Orig_Weapon_MP5.Single", enabled = true },
+        ["24"] = new WeaponCfg { name = "UMP45", weapon_name = "weapon_ump45", item_def_index = 24, legacy_event = "Weapon_UMP45.Single", orig_event = "Orig_Weapon_UMP45.Single", enabled = true },
+        ["25"] = new WeaponCfg { name = "XM1014", weapon_name = "weapon_xm1014", item_def_index = 25, legacy_event = "Weapon_XM1014.Single", orig_event = "Orig_Weapon_XM1014.Single", enabled = true },
+        ["26"] = new WeaponCfg { name = "bizon", weapon_name = "weapon_bizon", item_def_index = 26, legacy_event = "Weapon_bizon.Single", orig_event = "Orig_Weapon_bizon.Single", enabled = true },
+        ["27"] = new WeaponCfg { name = "Mag7", weapon_name = "weapon_mag7", item_def_index = 27, legacy_event = "Weapon_Mag7.Single", orig_event = "Orig_Weapon_Mag7.Single", enabled = true },
+        ["28"] = new WeaponCfg { name = "Negev", weapon_name = "weapon_negev", item_def_index = 28, legacy_event = "Weapon_Negev.Single", orig_event = "Orig_Weapon_Negev.Single", enabled = true },
+        ["29"] = new WeaponCfg { name = "Sawedoff", weapon_name = "weapon_sawedoff", item_def_index = 29, legacy_event = "Weapon_Sawedoff.Single", orig_event = "Orig_Weapon_Sawedoff.Single", enabled = true },
+        ["30"] = new WeaponCfg { name = "tec9", weapon_name = "weapon_tec9", item_def_index = 30, legacy_event = "Weapon_tec9.Single", orig_event = "Orig_Weapon_tec9.Single", enabled = true },
+        ["31"] = new WeaponCfg { name = "Taser", weapon_name = "weapon_taser", item_def_index = 31, legacy_event = "Weapon_Taser.Single", orig_event = "Orig_Weapon_Taser.Single", enabled = true },
+        ["32"] = new WeaponCfg { name = "hkp2000", weapon_name = "weapon_hkp2000", item_def_index = 32, legacy_event = "Weapon_hkp2000.Single", orig_event = "Orig_Weapon_hkp2000.Single", enabled = true },
+        ["33"] = new WeaponCfg { name = "MP7", weapon_name = "weapon_mp7", item_def_index = 33, legacy_event = "Weapon_MP7.Single", orig_event = "Orig_Weapon_MP7.Single", enabled = true },
+        ["34"] = new WeaponCfg { name = "MP9", weapon_name = "weapon_mp9", item_def_index = 34, legacy_event = "Weapon_MP9.Single", orig_event = "Orig_Weapon_MP9.Single", enabled = true },
+        ["35"] = new WeaponCfg { name = "Nova", weapon_name = "weapon_nova", item_def_index = 35, legacy_event = "Weapon_Nova.Single", orig_event = "Orig_Weapon_Nova.Single", enabled = true },
+        ["36"] = new WeaponCfg { name = "P250", weapon_name = "weapon_p250", item_def_index = 36, legacy_event = "Weapon_P250.Single", orig_event = "Orig_Weapon_P250.Single", enabled = true },
+        ["38"] = new WeaponCfg { name = "SCAR20", weapon_name = "weapon_scar20", item_def_index = 38, legacy_event = "Weapon_SCAR20.Single", orig_event = "Orig_Weapon_SCAR20.Single", enabled = true },
+        ["39"] = new WeaponCfg { name = "sg556", weapon_name = "weapon_sg556", item_def_index = 39, legacy_event = "Weapon_sg556.Single", orig_event = "Orig_Weapon_sg556.Single", enabled = true },
+        ["40"] = new WeaponCfg { name = "SSG08", weapon_name = "weapon_ssg08", item_def_index = 40, legacy_event = "Weapon_SSG08.Single", orig_event = "Orig_Weapon_SSG08.Single", enabled = true },
+        ["61"] = new WeaponCfg { name = "USP", weapon_name = "weapon_usp_silencer", item_def_index = 61, legacy_event = "Weapon_USP.Single", orig_event = "Orig_Weapon_USP.Single", enabled = true },
+        ["63"] = new WeaponCfg { name = "CZ75A", weapon_name = "weapon_cz75a", item_def_index = 63, legacy_event = "Weapon_CZ75A.Single", orig_event = "Orig_Weapon_CZ75A.Single", enabled = true },
+        ["64"] = new WeaponCfg { name = "Revolver", weapon_name = "weapon_revolver", item_def_index = 64, legacy_event = "Weapon_Revolver.Single", orig_event = "Orig_Weapon_Revolver.Single", enabled = true },
+        ["partyhorn"] = new WeaponCfg { name = "PartyHorn", weapon_name = "weapon_partyhorn", item_def_index = null, legacy_event = "Weapon_PartyHorn.Single", orig_event = "Orig_Weapon_PartyHorn.Single", enabled = true },
+    };
     private void LoadConfig()
     {
         try
         {
             if (!File.Exists(_cfgPath))
             {
-                _cfg = new RootCfg();
+                _cfg = new RootCfg { weapons = BuildDefaultWeapons() };
                 SaveConfig();
                 Log($"未找到配置，已生成默认配置: {_cfgPath}");
                 return;
@@ -216,7 +263,7 @@ public class OldWeaponSoundsPlugin : BasePlugin
                 $"// weapons.<def_index>.enabled = true  → 保持 addon 提供的 CS:GO 旧音{Environment.NewLine}" +
                 $"//                             = false → 还原为 CS2 原声（由插件拦截并重播 Orig_ 事件）{Environment.NewLine}";
 
-            File.WriteAllText(_cfgPath, header + JsonSerializer.Serialize(_cfg, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+            File.WriteAllText(_cfgPath, header + JsonSerializer.Serialize(_cfg, new JsonSerializerOptions { WriteIndented = true }), Utf8NoBom);
         }
         catch (Exception e) { Log("保存配置失败: " + e.Message); }
     }

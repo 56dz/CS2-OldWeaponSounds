@@ -14,6 +14,95 @@
 
 ---
 
+## 使用方法
+
+### 依赖（三项，缺一不可）
+
+| 依赖 | 作用 | 下载 |
+|------|------|------|
+| **Metamod:Source** | 插件加载器（CSS 的前置） | https://cs2.poggu.me/metamod/installation/ |
+| **CounterStrikeSharp** | 本插件的运行框架 | https://github.com/roflmuffin/CounterStrikeSharp |
+| **MultiAddonManager** | **把音效资源包分发给客户端**（关键） | https://github.com/Source2ZE/MultiAddonManager |
+
+> ⚠️ **MultiAddonManager 是必需的**：CS2 没有传统 FastDL（`sv_downloadurl` 在 CS2 中不存在），
+> 客户端只能通过创意工坊获取自定义音效，而 MultiAddonManager 就负责这件事。
+>
+> ⚠️ Linux 服务器请下载 **`steamrt3`** 构建 —— `-steamrt4` 需要 glibc 2.38，
+> 而 Debian 12 只有 2.36，会直接加载失败。
+
+### 1) 安装插件
+
+下载 [Releases](../../releases) 里的 zip，解压到服务器的 **`game/csgo/`** 目录（合并覆盖）：
+
+```
+game/csgo/addons/counterstrikesharp/plugins/OldWeaponSounds/
+├── OldWeaponSounds.dll
+└── OldWeaponSounds.deps.json
+```
+
+### 2) 配置 MultiAddonManager（关键一步）
+
+编辑 `game/csgo/cfg/multiaddonmanager/multiaddonmanager.cfg`，
+把**创意工坊 ID** 填入下面两项：
+
+```cfg
+mm_extra_addons         "3819498100"
+mm_client_extra_addons  "3819498100"
+
+mm_addon_mount_download 1     // 每次启动都校验/更新 addon
+mm_addon_debug          1     // 排查用；稳定后可改回 0
+```
+
+**本项目的创意工坊 ID：`3819498100`**
+<https://steamcommunity.com/sharedfiles/filedetails/?id=3819498100>
+
+### 3) 重启服务器
+
+```bash
+sudo systemctl restart cs2
+```
+
+启动日志中应能看到：
+
+```
+[MultiAddonManager] Addon 3819498100 downloaded successfully
+[MultiAddonManager] Adding search path: .../3819498100.vpk
+```
+
+### 4) 客户端进服
+
+首次进入会**下载约 3.8 MB 音效包 → 被断开一次 → 自动重连** ——
+这是 MultiAddonManager 的固有行为（由 `mm_extra_addons_timeout` 控制），属正常现象。
+
+### 5) 配置与命令
+
+插件配置**首次运行会自动生成**，无需手动创建（含全部 35 把武器）：
+
+```
+game/csgo/addons/counterstrikesharp/configs/plugins/OldWeaponSounds/OldWeaponSounds.json
+```
+
+| 命令 | 说明 |
+|------|------|
+| `css_oldws status` | 查看总开关 / 武器条目数 / 已处理消息数 / 成功还原数 |
+| `css_oldws list` | 列出所有被还原成 CS2 原声的武器 |
+| `css_oldws <item_def_index> on\|off` | 单独开关某把武器（`off` = 还原 CS2 原声），并写回配置 |
+| `css_oldws reload` | 重新读取配置文件 |
+
+例：`css_oldws 7 off` → 把 AK47 还原成 CS2 原声（`7` 是 AK47 的 `item_def_index`）
+
+### 效果预期
+
+| 武器 | 听感 |
+|------|------|
+| **AK47** | 变为 CS:GO **第一人称**枪声（`ak47_01`），即自己开枪时听到的那个 |
+| **FAMAS / Galil / Glock / Revolver / XM1014** | 这 5 把是 CS2 **真的换过音频**的，变化最明显 |
+| 其余（AWP / M4A1 / 沙鹰 / AUG / P250 …） | CS2 本来就在用 CS:GO 那份音频，**听感不变**（正常） |
+
+> 原理、逐字节取证、编译方式、故障排查见下文。
+
+---
+
 ## 一、核心发现（决定了整个方案）
 
 **CS2 客户端至今仍原样保留着大量 CS:GO 时代的武器枪声文件。**
