@@ -8,3 +8,7 @@ data/
 
 # 发布产物（走 GitHub Releases），不入库
 dist/
+
+# Python 缓存
+__pycache__/
+*.pyc
