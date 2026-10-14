@@ -97,7 +97,7 @@ AK47 逐字节比对：
 ├── plugin/
 │   ├── Plugin.cs                                  # 插件源码（每武器开关）
 │   ├── OldWeaponSounds.csproj                     # 工程文件（net10.0）
-│   ├── config.json                                # 35 把武器的开关配置（默认全部 = CS:GO 旧音）
+│   ├── config.json                                # 默认配置（随插件一起分发；首次运行会自动迁移到 configs/plugins/ 惯例位置）
 │   └── compiled/                                  # 已编译产物，可直接部署
 │       ├── OldWeaponSounds.dll
 │       ├── OldWeaponSounds.deps.json
@@ -220,12 +220,33 @@ addon 把 `Weapon_XXX.Single` 覆盖成 CS:GO 旧音，所以 **默认所有玩�
 
 ### 部署
 
+插件本体（**只有二进制**）：
+
 ```
 game/csgo/addons/counterstrikesharp/plugins/OldWeaponSounds/
 ├── OldWeaponSounds.dll
 ├── OldWeaponSounds.deps.json
-└── config.json
+└── OldWeaponSounds.pdb          （可选，调试用）
 ```
+
+**配置文件放在 CounterStrikeSharp 惯例位置**（与其它插件一致）：
+
+```
+game/csgo/addons/counterstrikesharp/configs/plugins/OldWeaponSounds/OldWeaponSounds.json
+```
+
+文件夹名与文件名都等于插件 `ModuleName`，与 `configs/plugins/` 下其它插件
+（`RemovePlayerClipping`、`WeaponPaints` 等）保持一致。
+
+三种情况的行为：
+
+| 情况 | 行为 |
+|------|------|
+| 惯例位置已有配置 | 直接使用 |
+| 惯例位置没有，但插件目录下有 `config.json`（旧版布局） | **自动迁移**到惯例位置并写日志，旧文件不再使用 |
+| 两者都没有（全新安装） | 在惯例位置生成默认配置（35 把武器，全部保持 CS:GO 旧音） |
+
+> 这样**升级插件只需替换插件目录**，不会覆盖用户已改过的配置。
 
 前置依赖：**Metamod:Source** + **CounterStrikeSharp**。替换 dll 后 CSS 约 1 秒自动热重载。
 
@@ -235,10 +256,10 @@ game/csgo/addons/counterstrikesharp/plugins/OldWeaponSounds/
 |------|------|
 | `css_oldws status` | 总开关 / 武器条目数 / 已处理消息数 / 成功还原数 |
 | `css_oldws list` | 列出所有被还原成 CS2 原声的武器 |
-| `css_oldws <item_def_index> on\|off` | `on` = CS:GO 旧音（默认）、`off` = CS2 原声，并写回 config.json |
-| `css_oldws reload` | 重新读取 config.json |
+| `css_oldws <item_def_index> on\|off` | `on` = CS:GO 旧音（默认）、`off` = CS2 原声，并写回配置文件 |
+| `css_oldws reload` | 重新读取配置文件 |
 
-### 配置（`config.json`）
+### 配置（`OldWeaponSounds.json`）
 
 ```jsonc
 {

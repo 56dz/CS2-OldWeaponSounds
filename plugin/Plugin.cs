@@ -14,7 +14,7 @@
 // 命令：
 //   css_oldws status                    查看状态
 //   css_oldws <item_def_index> on|off   开/关某把武器的 CS:GO 旧音（off = 还原 CS2 原声）
-//   css_oldws reload                    重新读取 config.json
+//   css_oldws reload                    重新读取配置文件
 //   css_oldws list                      列出所有关闭（还原成 CS2 原声）的武器
 
 using System.Text;
@@ -96,7 +96,7 @@ public class OldWeaponSoundsPlugin : BasePlugin
     public override void Load(bool hotReload)
     {
         _logPath = Path.Combine(ModuleDirectory, "oldweaponsounds.log");
-        _cfgPath = Path.Combine(ModuleDirectory, "config.json");
+        _cfgPath = ResolveConfigPath();
         RotateLog();
 
         Log($"=== OldWeaponSounds v2.0 加载 (hotReload={hotReload}) ===");
@@ -168,11 +168,55 @@ public class OldWeaponSoundsPlugin : BasePlugin
         }
     }
 
+    /// <summary>
+    /// 配置路径遵循 CounterStrikeSharp 惯例：
+    ///   &lt;counterstrikesharp&gt;/configs/plugins/&lt;插件名&gt;/&lt;插件名&gt;.json
+    /// 若发现早期放在插件目录下的 config.json，则自动迁移到惯例位置。
+    /// 这样升级插件（整目录替换）时不会覆盖用户的配置。
+    /// </summary>
+    private string ResolveConfigPath()
+    {
+        // ModuleDirectory = <counterstrikesharp>/plugins/<插件名>，上溯两级即 <counterstrikesharp>
+        var cssRoot = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", ".."));
+        var preferred = Path.Combine(cssRoot, "configs", "plugins", ModuleName, ModuleName + ".json");
+        var legacy = Path.Combine(ModuleDirectory, "config.json");
+
+        if (File.Exists(preferred)) return preferred;
+
+        if (File.Exists(legacy))
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(preferred);
+                if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+                File.Copy(legacy, preferred);
+                Log($"配置已从插件目录迁移到惯例位置: {preferred}");
+                return preferred;
+            }
+            catch (Exception e)
+            {
+                Log($"迁移配置失败，继续沿用旧位置: {e.Message}");
+                return legacy;
+            }
+        }
+
+        return preferred;   // 全新安装：在惯例位置生成
+    }
+
     private void SaveConfig()
     {
         try
         {
-            File.WriteAllText(_cfgPath, JsonSerializer.Serialize(_cfg, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+            var dir = Path.GetDirectoryName(_cfgPath);
+            if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+
+            var header =
+                $"// OldWeaponSounds 配置{Environment.NewLine}" +
+                $"// 路径遵循 CounterStrikeSharp 惯例: configs/plugins/{ModuleName}/{ModuleName}.json{Environment.NewLine}" +
+                $"// weapons.<def_index>.enabled = true  → 保持 addon 提供的 CS:GO 旧音{Environment.NewLine}" +
+                $"//                             = false → 还原为 CS2 原声（由插件拦截并重播 Orig_ 事件）{Environment.NewLine}";
+
+            File.WriteAllText(_cfgPath, header + JsonSerializer.Serialize(_cfg, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
         }
         catch (Exception e) { Log("保存配置失败: " + e.Message); }
     }
