@@ -1,0 +1,90 @@
+subclass	base_weapon	model	WEAPON_SOUND_SINGLE	状态
+weapon_skin_001	weapon_ak47	ak103_hina.vmdl	Weapon_AK47.Single	OK
+weapon_skin_002	weapon_aug	aug_tx.vmdl	Weapon_AUG.Single	OK
+weapon_skin_003	weapon_bayonet	bayonet_prs.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_004	weapon_knife_butterfly	butterfly_anime.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_005	weapon_knife_butterfly	butterfly_ms.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_006	weapon_knife_karambit	galaxykarambit.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_007	weapon_glock	glock_doro.vmdl	Weapon_Glock.Single	OK
+weapon_skin_008	weapon_hegrenade	he_doro.vmdl	(未定义)	非枪械
+weapon_skin_009	weapon_hegrenade	he_shit.vmdl	(未定义)	非枪械
+weapon_skin_010	weapon_knife_karambit	karambit_mfsn.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_011	weapon_knife_karambit	karambit_prs.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_012	weapon_m4a1_silencer	m4a1s_am.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_013	weapon_m4a1_silencer	m4a1s_aur1c.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_014	weapon_knife_m9_bayonet	m9_febi.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_015	weapon_knife_m9_bayonet	m9_prs.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_016	weapon_mp9	mp9_jxl.vmdl	Weapon_MP9.Single	OK
+weapon_skin_017	weapon_mp9	mp9_prs.vmdl	Weapon_MP9.Single	OK
+weapon_skin_018	weapon_mp9	mp9_taffy.vmdl	Weapon_MP9.Single	OK
+weapon_skin_019	weapon_negev	negev_doro.vmdl	Weapon_Negev.Single	OK
+weapon_skin_020	weapon_usp_silencer	usp_tx.vmdl	Weapon_USP.Single	OK
+weapon_skin_021	weapon_knife_butterfly	leilongwhite.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_022	weapon_knife_css	cssknife_bi.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_023	weapon_knife_karambit	karambit_ice.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_024	weapon_negev	negev_bi.vmdl	Weapon_Negev.Single	OK
+weapon_skin_025	weapon_usp_silencer	usp_bi.vmdl	Weapon_USP.Single	OK
+weapon_skin_026	weapon_incgrenade	decoy_kipfel.vmdl	(未定义)	非枪械
+weapon_skin_027	weapon_hegrenade	he_karin.vmdl	(未定义)	非枪械
+weapon_skin_028	weapon_smokegrenade	smoke_lime.vmdl	(未定义)	非枪械
+weapon_skin_029	weapon_usp_silencer	usp_neko.vmdl	Weapon_USP.Single	OK
+weapon_skin_030	weapon_usp_silencer	usp_neko2.vmdl	Weapon_USP.Single	OK
+weapon_skin_031	weapon_m4a1_silencer	m4a1_prisma_aur1c.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_032	weapon_knife_butterfly	butterfly_aur1c.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_033	weapon_mp9	mp9_chocolat.vmdl	Weapon_MP9.Single	OK
+weapon_skin_034	weapon_mp5sd	mp5_doro.vmdl	Weapon_MP5.Single	OK
+weapon_skin_035	weapon_negev	negev_aur1c.vmdl	Weapon_Negev.Single	OK
+weapon_skin_036	weapon_ak47	ak47_dragon.vmdl	Weapon_AK47.Single	OK
+weapon_skin_037	weapon_m4a1	rgp_edragon.vmdl	Weapon_M4A4.Single	OK
+weapon_skin_038	weapon_knife	diamond_sword.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_039	weapon_knife_css	cssknife_water.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_040	weapon_ak47	ak47_water.vmdl	Weapon_AK47.Single	OK
+weapon_skin_041	weapon_m4a1_silencer	m4a1s_water.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_042	weapon_mp9	mp9_water.vmdl	Weapon_MP9.Single	OK
+weapon_skin_043	weapon_knife_skeleton	skeleton_doro.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_044	weapon_negev	qjb201_anime.vmdl	Weapon_Negev.Single	OK
+weapon_skin_045	weapon_negev	negev_water.vmdl	Weapon_Negev.Single	OK
+weapon_skin_046	weapon_usp_silencer	usp_water.vmdl	Weapon_USP.Single	OK
+weapon_skin_047	weapon_bizon	bizon_bi.vmdl	Weapon_bizon.Single	OK
+weapon_skin_048	weapon_hegrenade	he_doro2.vmdl	(未定义)	非枪械
+weapon_skin_049	weapon_hegrenade	laoda.vmdl	(未定义)	非枪械
+weapon_skin_050	weapon_smokegrenade	ajr.vmdl	(未定义)	非枪械
+weapon_skin_051	weapon_hegrenade	sparklefumo.vmdl	(未定义)	非枪械
+weapon_skin_052	weapon_ak47	jiuwei191.vmdl	Weapon_AK47.Single	OK
+weapon_skin_053	weapon_knife_m9_bayonet	m9_jiuwei.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_054	weapon_mp9	mp9_aje.vmdl	Weapon_MP5.Single	MISMATCH(应为 Weapon_MP9.Single)
+weapon_skin_055	weapon_m4a1_silencer	mcx_aje.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_056	weapon_knife_karambit	galaxykarambit_green.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_057	weapon_m4a1_silencer	m4a1s_zero.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_058	weapon_hegrenade	he_shit2.vmdl	(未定义)	非枪械
+weapon_skin_059	weapon_famas	famas_laser.vmdl	Weapon_FAMAS.Single	OK
+weapon_skin_060	weapon_famas	famas_rose.vmdl	Weapon_FAMAS.Single	OK
+weapon_skin_061	weapon_knife_m9_bayonet	knife_aur1c.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_062	weapon_knife_m9_bayonet	m9_fish.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_063	weapon_mp5sd	mp5_hs.vmdl	Weapon_MP5.Single	OK
+weapon_skin_064	weapon_deagle	deagle_dh.vmdl	Weapon_DEagle.Single	OK
+weapon_skin_065	weapon_bizon	bizon_kipfel.vmdl	Weapon_bizon.Single	OK
+weapon_skin_066	weapon_m4a1_silencer	mcx_cj.vmdl	Weapon_M4A1.Single	OK
+weapon_skin_067	weapon_ak47	ak47_chiffon.vmdl	Weapon_AK47.Single	OK
+weapon_skin_068	weapon_ump45	iso9bg.vmdl	Weapon_MP9.Single	MISMATCH(应为 Weapon_UMP45.Single)
+weapon_skin_069	weapon_xm1014	xm_anime.vmdl	Weapon_XM1014.Single	OK
+weapon_skin_070	weapon_smokegrenade	smoke_baka.vmdl	(未定义)	非枪械
+weapon_skin_071	weapon_hegrenade	he_creeper.vmdl	(未定义)	非枪械
+weapon_skin_072	weapon_knife_karambit	karambit_kikyo.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_073	weapon_usp_silencer	gl45_man.vmdl	Weapon_USP.Single	OK
+weapon_skin_074	weapon_knife_kukri	diamond_pickaxe.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_075	weapon_ump45	qcq171_xh.vmdl	Weapon_MP5.Single	MISMATCH(应为 Weapon_UMP45.Single)
+weapon_skin_076	weapon_m4a1_silencer	m7_prisma.vmdl	Weapon_M4A4.Single	MISMATCH(应为 Weapon_M4A1.Single)
+weapon_skin_077	weapon_ssg08	m200_f1.vmdl	Weapon_SSG08.Single	OK
+weapon_skin_078	weapon_negev	qjb201_miku.vmdl	Weapon_Negev.Single	OK
+weapon_skin_079	weapon_xm1014	heritage.vmdl	Weapon_XM1014.Single	OK
+weapon_skin_080	weapon_hkp2000	m1911_lty.vmdl	Weapon_USP.Single	MISMATCH(应为 Weapon_hkp2000.Single)
+weapon_skin_081	weapon_m4a1	m4a4s_winefox.vmdl	Weapon_M4A1.Single	MISMATCH(应为 Weapon_M4A4.Single)
+weapon_skin_082	weapon_mp9	mp9_youyu.vmdl	Weapon_MP9.Single	OK
+weapon_skin_083	weapon_awp	ssls_hd.vmdl	Weapon_scar20.Single	MISMATCH(应为 Weapon_AWP.Single)
+weapon_skin_084	weapon_xm1014	xm_karin.vmdl	Weapon_XM1014.Single	OK
+weapon_skin_085	weapon_famas	qbz95_aur1c.vmdl	Weapon_FAMAS.Single	OK
+weapon_skin_086	weapon_mac10	smg_requiem.vmdl	Weapon_MP9.Single	MISMATCH(应为 Weapon_MAC10.Single)
+weapon_skin_087	weapon_knife_butterfly	butterfly_vtb.vmdl	Weapon_DEagle.Single	非枪械
+weapon_skin_088	weapon_negev	pkm_f8fq.vmdl	Weapon_Negev.Single	OK
+weapon_skin_089	weapon_awp	m82_kanami.vmdl	Weapon_scar20.Single	MISMATCH(应为 Weapon_AWP.Single)

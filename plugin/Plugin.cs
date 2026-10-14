@@ -57,6 +57,12 @@ public class RootCfg
     /// <summary>诊断日志。</summary>
     public bool debug { get; set; } = true;
 
+    /// <summary>
+    /// 排错开关：true = 对所有武器都由插件显式播放旧音事件（不再依赖 subclass 检测）。
+    /// 正常情况下不需要开启 —— 只有检测到自定义 subclass（换过模型）时才接管。
+    /// </summary>
+    public bool forceEmitAlways { get; set; } = false;
+
     /// <summary>按 item_def_index 索引的武器表。</summary>
     public Dictionary<string, WeaponCfg> weapons { get; set; } = new();
 }
@@ -315,21 +321,54 @@ public class OldWeaponSoundsPlugin : BasePlugin
             var idi = um.HasField("item_def_index") ? um.ReadInt("item_def_index") : int.MinValue;
             if (idi == int.MinValue) return HookResult.Continue;
 
-            // 查表：表里没有 / enabled=true -> 什么都不做，客户端播 addon 的 CS:GO 旧音
+            // 查表
             if (!_cfg.weapons.TryGetValue(idi.ToString(), out var wc)) return HookResult.Continue;
-            if (wc.enabled) return HookResult.Continue;
 
             var wid = um.HasField("weapon_id") ? um.ReadInt("weapon_id") : -1;
             var st = um.HasField("sound_type") ? um.ReadInt("sound_type") : -1;
 
+            // 1) 定位开枪者实体（位置音效必需）
+            var shooter = ResolveShooter(wid, idi);
+
+            // 1b) 判断该武器是否被「换模型」类插件改过 subclass。
+            //     换 subclass 会连带换掉整套 VData，**其中包括开火音效表 m_aShootSounds**。
+            //     模型包里的 m_aShootSounds 可能是错的，甚至指向不存在的事件名
+            //     （实测：AWP 皮肤写成小写的 Weapon_scar20.Single，而 CS2 真实事件是
+            //      Weapon_SCAR20.Single —— 事件名按字符串哈希、区分大小写 → 未定义 → 完全无声）。
+            //     所以只要检测到自定义 subclass，就由本插件显式播放「本武器正确」的旧音事件，
+            //     不再依赖 VData 里写了什么。
+            bool customSubclass = false;
+            long subToken = 0;
+            if (shooter != null)
+            {
+                try
+                {
+                    var wpn = shooter.PlayerPawn?.Value?.WeaponServices?.ActiveWeapon?.Value;
+                    if (wpn != null && wpn.IsValid)
+                    {
+                        subToken = wpn.SubclassID.Value;
+                        customSubclass = subToken != 0;
+                    }
+                }
+                catch { }
+            }
+
+            // 决定本次显式播放哪个事件：
+            //   enabled = false                → 还原 CS2 原声（orig_event）
+            //   enabled = true + 自定义 subclass → 插件接管，显式播 CS:GO 旧音（legacy_event）
+            //   enabled = true + 未改过          → 什么都不做，交给原版路径（addon 覆盖已生效）
+            string target;
+            if (!wc.enabled) target = wc.orig_event;
+            else if (customSubclass || _cfg.forceEmitAlways) target = wc.legacy_event;
+            else return HookResult.Continue;
+
             if (_cfg.debug && _rawLogged < MaxRawDiagnostics)
             {
                 _rawLogged++;
-                Log($"452 weapon_id={wid} sound_type={st} item_def_index={idi}({wc.name}) -> 该武器要还原成 CS2 原声");
+                Log($"452 weapon_id={wid} sound_type={st} item_def_index={idi}({wc.name}) " +
+                    $"subclass={subToken}({(customSubclass ? "已换模型" : "原版")}) -> 显式播放 {target}");
             }
 
-            // 1) 定位开枪者实体（位置音效必需）
-            var shooter = ResolveShooter(wid, idi);
             if (shooter == null)
             {
                 _suppressFailed++;
@@ -345,22 +384,22 @@ public class OldWeaponSoundsPlugin : BasePlugin
                 return HookResult.Continue;
             }
 
-            // 2) 先发出 CS2 原声事件（Orig_ 事件与原事件逐字段相同，仅事件名不同）
+            // 2) 先发出目标事件（legacy = CS:GO 旧音；orig = CS2 原声）
             var recipients = new RecipientFilter();
             recipients.AddAllPlayers();
-            var guid = pawn.EmitSound(wc.orig_event, recipients, 1.0f);
+            var guid = pawn.EmitSound(target, recipients, 1.0f);
 
-            // 3) 只有拿到非 0 guid 才屏蔽原版消息
+            // 3) 只有拿到非 0 guid 才屏蔽原版消息（失败一律保留原版，绝不产生无声）
             if (guid == 0)
             {
                 _suppressFailed++;
-                Log($"[保留原版] {wc.name}(def={idi}) EmitSound(\"{wc.orig_event}\") 返回 guid=0，保留原版音效（不会无声）");
+                Log($"[保留原版] {wc.name}(def={idi}) EmitSound(\"{target}\") 返回 guid=0，保留原版音效（不会无声）");
                 return HookResult.Continue;
             }
 
             _replaced++;
             if (_cfg.debug)
-                Log($"[已还原] {wc.name}(def={idi}) 玩家=\"{shooter.PlayerName}\" -> {wc.orig_event} guid={guid}，已屏蔽原版消息");
+                Log($"[已替换] {wc.name}(def={idi}) 玩家=\"{shooter.PlayerName}\" -> {target} guid={guid}，已屏蔽原版消息");
 
             return HookResult.Handled;
         }

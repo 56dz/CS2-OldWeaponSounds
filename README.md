@@ -417,6 +417,7 @@ dotnet build -c Release   # 需要 .NET SDK（API 目标框架 net10.0）
 | 覆盖范围 | 不含 M4A1-S（def 60，`Weapon_M4A1.Silenced`）、刀、手雷 | 按需扩展映射表 |
 | 发布整洁度 | 编译产物目录若残留旧的文本 `vsndevts`（非 `_c`），发布会一并打包（无害，客户端只读 `_c`） | 发布前删除 |
 | 空服休眠 | CSS 定时器在空服时不推进 | 本插件不依赖任何定时器 |
+| **换模型插件** | 换 subclass 会连带换掉整套 VData，其中包括开火音效表 `m_aShootSounds`；模型包可能把它写成错误甚至不存在的事件名（实测 AWP 皮肤写成小写 `Weapon_scar20.Single` → 完全无声） | 已兼容：插件检测到自定义 subclass 后会**显式播放本武器正确的旧音**，不再依赖 VData。排错开关 `forceEmitAlways` |
 
 ---
 
