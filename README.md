@@ -20,7 +20,7 @@
 
 | 依赖 | 作用 | 下载 |
 |------|------|------|
-| **Metamod:Source** | 插件加载器（CSS 的前置） | https://cs2.poggu.me/metamod/installation/ |
+| **Metamod:Source** | 插件加载器（CSS 的前置） | https://www.sourcemm.net/downloads.php?branch=dev |
 | **CounterStrikeSharp** | 本插件的运行框架 | https://github.com/roflmuffin/CounterStrikeSharp |
 | **MultiAddonManager** | **把音效资源包分发给客户端**（关键） | https://github.com/Source2ZE/MultiAddonManager |
 
