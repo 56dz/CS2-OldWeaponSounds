@@ -63,6 +63,15 @@ public class RootCfg
     /// </summary>
     public bool forceEmitAlways { get; set; } = false;
 
+    /// <summary>
+    /// true  = 检测到自定义 subclass（换过模型）时，由插件显式播放旧音并屏蔽原版消息。
+    ///         适用于"模型包的 weapons.vdata 把 m_aShootSounds 写错"的情况。
+    /// false = 插件不插手（交给原版路径，由 addon 的 soundevent 覆盖生效）。
+    ///         适用于"模型包已经修好 / 已与音效包融合"的情况 —— 更安全，
+    ///         因为不会因为 EmitSound 出问题而把原本能响的声音屏蔽掉。
+    /// </summary>
+    public bool emitForSubclass { get; set; } = false;
+
     /// <summary>按 item_def_index 索引的武器表。</summary>
     public Dictionary<string, WeaponCfg> weapons { get; set; } = new();
 }
@@ -359,7 +368,7 @@ public class OldWeaponSoundsPlugin : BasePlugin
             //   enabled = true + 未改过          → 什么都不做，交给原版路径（addon 覆盖已生效）
             string target;
             if (!wc.enabled) target = wc.orig_event;
-            else if (customSubclass || _cfg.forceEmitAlways) target = wc.legacy_event;
+            else if (_cfg.forceEmitAlways || (_cfg.emitForSubclass && customSubclass)) target = wc.legacy_event;
             else return HookResult.Continue;
 
             if (_cfg.debug && _rawLogged < MaxRawDiagnostics)
@@ -484,6 +493,31 @@ public class OldWeaponSoundsPlugin : BasePlugin
                     info.ReplyToCommand(restored.Count == 0
                         ? "[OldWeaponSounds] 当前没有武器被还原成 CS2 原声（全部使用 CS:GO 旧音）"
                         : $"[OldWeaponSounds] 还原成 CS2 原声 ({restored.Count}): {string.Join(", ", restored)}");
+                    return;
+                }
+
+            case "test":
+                {
+                    // 排查用：直接在自己身上发射一个声音，判断"插件发射链路"是否通
+                    //   css_oldws test                          -> 发射 Weapon_AK47.Single（事件）
+                    //   css_oldws test Weapon_AWP.Single        -> 发射指定事件
+                    //   css_oldws test sounds/weapons/ak47/ak47_csgo_01.vsnd -> 直接播文件
+                    var target = info.ArgCount > 2 ? info.GetArg(2).Trim() : "Weapon_AK47.Single";
+                    var who = player ?? Utilities.GetPlayers().FirstOrDefault(p => p != null && p.IsValid && !p.IsBot);
+                    var pwn = who?.PlayerPawn?.Value;
+                    if (pwn == null || !pwn.IsValid)
+                    {
+                        info.ReplyToCommand("[OldWeaponSounds] 测试失败：拿不到你的角色实体（请在游戏内执行）");
+                        return;
+                    }
+                    var rf = new RecipientFilter();
+                    rf.AddAllPlayers();
+                    var g = pwn.EmitSound(target, rf, 1.0f);
+                    info.ReplyToCommand($"[OldWeaponSounds] 已发射 \"{target}\"，guid={g}");
+                    info.ReplyToCommand(g == 0
+                        ? "guid=0 → 服务端就没解析出来（事件名或文件路径有问题）"
+                        : "guid≠0 → 服务端已发出。请听：有旧音 / 有 CS2 原音 / 完全没声，告诉我结果");
+                    Log($"[测试] 玩家=\"{who?.PlayerName}\" 发射 \"{target}\" guid={g}");
                     return;
                 }
 
