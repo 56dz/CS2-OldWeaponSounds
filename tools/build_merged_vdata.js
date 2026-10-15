@@ -50,6 +50,12 @@ const KNIFE_ALIAS = {
 
 const TYPED_PREFIX = /\b(resource_name|soundevent|resource|particle|material|vtex|vcompmat|vmix|vmdl|vsnd|vpost|vmap):/g;
 
+// 原版条目覆盖：需求是「AWP 不管原版还是换皮肤，弹匣都是 10 发」
+// （CS:GO 时代的经典 AWP = 10 发弹匣；CS2 改成了 5 发）
+const VANILLA_OVERRIDES = {
+  weapon_awp: { m_iMaxClip1: '10', m_iDefaultClip1: '10' },
+};
+
 function stripTyped(line) { return line.replace(TYPED_PREFIX, ''); }
 
 /** 解析 resourceinfo 转储：返回 Map<entryName, {start,end,lines}>，只取含 generic_data_type 的那个数据块 */
@@ -238,13 +244,38 @@ function main() {
   L.push(KV3_HEADER);
   L.push('{');
   L.push('\tgeneric_data_type = "CBasePlayerWeaponVData"');
-  // 3a) 原版条目（保持原版 dump 中的顺序）
+  // 3a) 原版条目（保持原版 dump 中的顺序；按需应用 VANILLA_OVERRIDES）
   for (const n of baseNames) {
+    const body = V.get(n).body.slice();
+    const ov = VANILLA_OVERRIDES[n];
+    if (ov) {
+      const changed = {};
+      for (const [k, v] of Object.entries(ov)) changed[k] = setField(body, k, v);
+      report.vanillaOverrides = report.vanillaOverrides || {};
+      report.vanillaOverrides[n] = changed;
+    }
     L.push('\t' + n + ' = ');
-    L.push(...V.get(n).body);
+    L.push(...body);
   }
   // 3b) 89 个皮肤
   for (const e of outEntries) {
+    L.push('\t' + e.name + ' = ');
+    L.push(...e.body);
+  }
+
+  // 3c) 附加条目：无皮肤也要 10 发的 AWP 默认态
+  //     实测 addon 对 weapons.vdata 是**合并语义**：
+  //       · 新增条目有效（89 个皮肤、刀的模型换装都能生效）
+  //       · 覆盖基础游戏已有条目无效（原版 weapon_awp 的 10 发被基础游戏的 5 发压住）
+  //     → "默认 AWP 也 10 发"只能靠**再新增一个子类**，由 WeaponModelChanger 应用到未选皮肤的 AWP。
+  const extraEntries = [];
+  if (V.has('weapon_awp')) {
+    const b = V.get('weapon_awp').body.slice();
+    setField(b, 'm_iMaxClip1', '10');
+    setField(b, 'm_iDefaultClip1', '10');
+    extraEntries.push({ name: 'weapon_awp_10round', body: b });
+  }
+  for (const e of extraEntries) {
     L.push('\t' + e.name + ' = ');
     L.push(...e.body);
   }
@@ -258,7 +289,7 @@ function main() {
     rows: rows.length,
     skinsEmitted: outEntries.length,
     vanillaEntries: baseNames.length,
-    totalEntries: outEntries.length + baseNames.length + 1,
+    totalEntries: outEntries.length + baseNames.length + 1 + (typeof extraEntries !== "undefined" ? extraEntries.length : 0),
     bytes: Buffer.byteLength(text, 'utf8'),
     braceDepthAtEnd: depth,
   };
