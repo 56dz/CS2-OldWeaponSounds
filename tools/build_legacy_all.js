@@ -556,6 +556,8 @@ const droppedChildren = new Set();
 let durationFixed = 0;
 const durationChangedList = [];
 const durationNoData = [];
+// 记录每个主覆盖块最终写出的音量，供 `_Q` 变体按比例继承
+const emittedVolume = new Map();
 for (const t of targetList) {
   const raw = getBlock(t.event);
   if (!raw) { problems.push(`gsw.txt 缺失事件: ${t.event}`); continue; }
@@ -629,6 +631,65 @@ for (const t of targetList) {
 
   push(t.event, block);
   overrideCount++;
+  const vm = /^\t\tvolume\s*=\s*([0-9.]+)/m.exec(block);
+  if (vm) emittedVolume.set(t.event, Number(vm[1]));
+}
+
+// 3a-2. `_Q` 变体事件（CS2 独有的「安静版」工艺音）
+//
+// 背景：CS2 给 60 个工艺音配了 `_Q` 变体（BoltPull_Q / BoltBack_Q / Slideback_Q /
+// Sliderelease_Q / Pump_Q / Clipin_Q ...），volume 通常是主事件的 0.5，其余字段与主事件
+// 只差 display_broadcast=false 与 metadata。引擎在「快速动作」场景（快速切枪、快速换弹）
+// 播的是 `_Q` 而不是主事件。
+//
+// 踩坑：最初把 `_Q` 判为「CS:GO 没有对应事件 → 不处理」，导致主事件已换成 CS:GO 旧音、
+// 但玩家一快速切枪仍然听到 CS2 新录音（用户报「切枪拉栓声还是 CS2 的」就是这个）。
+// `_Q` 不需要 CS:GO 有同名事件 —— 它只是主事件的音量变体，把主事件的 CS:GO 素材搬过来
+// 并按 CS2 原有的 `_Q`/主 音量比缩放即可。
+const qEvents = (() => {
+  const out = [];
+  for (const [name] of index) {
+    if (!/_Q$/.test(name)) continue;
+    const base = name.replace(/_Q$/, '');
+    if (!overriddenSet.has(base)) continue;
+    if (overriddenSet.has(name)) continue; // 已被 plan 显式覆盖的不重复处理
+    out.push({ q: name, base });
+  }
+  return out.sort((a, b) => a.q.localeCompare(b.q));
+})();
+let qCount = 0;
+const qNoVolume = [];
+for (const { q, base } of qEvents) {
+  const raw = getBlock(q);
+  if (!raw) continue;
+  const baseTarget = targetList.find((t) => t.event === base);
+  if (!baseTarget) continue;
+  // 用主事件的 CS:GO 素材，但按 _Q 自己的变体数对齐
+  const wantVariants = countCs2Variants(q);
+  const vsndsRaw = baseTarget.wavs.map(vsndOf);
+  const vsnds = fitVariants(vsndsRaw, wantVariants, cs2VsndList(q));
+  let block = replaceVsnd(raw, vsnds);
+  // 音量：保留 CS2 原有的 _Q/主 比例，套到主事件归一后的新音量上
+  const qVolM = /^\t\tvolume\s*=\s*([0-9.]+)/m.exec(raw);
+  const baseRaw = getBlock(base);
+  const baseVolM = baseRaw ? /^\t\tvolume\s*=\s*([0-9.]+)/m.exec(baseRaw) : null;
+  const emitted = emittedVolume.get(base);
+  if (qVolM && baseVolM && emitted !== undefined) {
+    const qVol = Number(qVolM[1]);
+    const bVol = Number(baseVolM[1]);
+    if (bVol > 0) {
+      const next = Math.min(Math.max(emitted * (qVol / bVol), 0), 1);
+      block = setVolume(block, next);
+    }
+  } else {
+    qNoVolume.push(q);
+  }
+  if (wavDir) {
+    const realDur = vsndDuration(vsnds, wavDir);
+    if (realDur !== null && realDur > 0) block = setDuration(block, realDur);
+  }
+  push(q, block);
+  qCount++;
 }
 
 // 3b. Orig_ 回退块（仅 35 把武器，供插件按武器关闭旧音时使用）
@@ -685,6 +746,8 @@ console.log(JSON.stringify({
   volume_skipped: volumeSkipped.length,
   variant_adjusted: variantAdjusted.length,
   child_dropped: droppedChildren.size,
+  q_overridden: qCount,
+  q_total: qEvents.length,
   duration_fixed: durationFixed,
   duration_changed: durationChangedList.length,
   duration_nodata: durationNoData.length,
@@ -709,6 +772,10 @@ if (volumePatchedList.length) {
 if (droppedChildren.size) {
   console.log('已剔除 CS:GO 不存在的叠层子事件（CS2 独有，会与旧音叠加）:');
   console.log('  ' + [...droppedChildren].sort().join(', '));
+}
+if (qCount) {
+  console.log(`已覆盖 _Q（安静版）工艺音事件 ${qCount}/${qEvents.length} 个`);
+  if (qNoVolume.length) console.log(`  _Q 音量未能按比例继承（保留 CS2 原值）: ${qNoVolume.length} 个`);
 }
 if (problems.length) {
   console.error('问题:\n  ' + problems.join('\n  '));

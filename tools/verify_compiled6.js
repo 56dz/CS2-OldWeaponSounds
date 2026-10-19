@@ -139,7 +139,28 @@ for (const d of durBad.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).sli
 }
 if (durBad.length) problems.push(`${durBad.length} 个事件 vsnd_duration 与实际 wav 长度不符`);
 
-const extra = [...blocks.keys()].filter((k) => !expected.has(k) && !k.startsWith('Orig_'));
+// `_Q` 块：CS2 独有的「安静版」工艺音。主事件已覆盖时必须一并覆盖，
+// 否则引擎在快速动作场景（快速切枪/换弹）仍播 CS2 原音 —— 用户报的
+// 「切枪拉栓声还是 CS2 的」就是这个漏网。校验：必须指向自定义旧音 + 时长对齐。
+const qBlocks = [...blocks.keys()].filter((k) => /_Q$/.test(k) && !k.startsWith('Orig_'));
+let qOk = 0;
+const qBad = [];
+for (const q of qBlocks) {
+  const b = blocks.get(q);
+  const v = vsnds(b);
+  if (!v.length) { qBad.push(`${q} 无 vsnd`); continue; }
+  if (!v.every((p) => p.startsWith('sounds/weapons_csgo/'))) { qBad.push(`${q} 未指向自定义旧音`); continue; }
+  const real = realDurOf(v);
+  if (real === null) { qBad.push(`${q} 无法测量时长`); continue; }
+  const declM = /^\t\tvsnd_duration\s*=\s*([0-9.]+)/m.exec(b.join('\n'));
+  const decl = declM ? Number(declM[1]) : null;
+  if (decl === null || Math.abs(decl - real) > 0.02) { qBad.push(`${q} 时长不符 real=${real.toFixed(3)} decl=${decl}`); continue; }
+  qOk++;
+}
+console.log(`_Q 安静版块: ${qOk}/${qBlocks.length} 通过`);
+for (const q of qBad) problems.push(q);
+
+const extra = [...blocks.keys()].filter((k) => !expected.has(k) && !k.startsWith('Orig_') && !/_Q$/.test(k));
 if (extra.length) console.log(`其他块（可能来自元数据）: ${extra.join(', ')}`);
 
 if (problems.length) {

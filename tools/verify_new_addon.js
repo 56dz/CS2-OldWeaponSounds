@@ -1,7 +1,8 @@
 // 生成结果的全面自检
 const fs = require('fs');
+const IN = process.argv[2] || 'data/out/soundevents_addon.vsndevts';
 const g = fs.readFileSync('data/gsw.txt', 'utf8').split(/\r?\n/);
-const S = fs.readFileSync('data/out/soundevents_addon.vsndevts', 'utf8').split(/\r?\n/);
+const S = fs.readFileSync(IN, 'utf8').split(/\r?\n/);
 const plan = JSON.parse(fs.readFileSync('data/csgo_ref/plan_full_cover.json', 'utf8'));
 const KEEP_SUFFIX = new Set(['Zoom', 'ZoomIn', 'ZoomOut']);
 
@@ -53,9 +54,21 @@ for (const l of S) {
   if (m) emitted.push(m[1]);
 }
 const mainEmitted = emitted.filter((e) => !e.startsWith('Orig_'));
-console.log(`生成块: ${emitted.length}  主覆盖: ${mainEmitted.length}  Orig_: ${emitted.length - mainEmitted.length}`);
-if (mainEmitted.length !== plan.events.length) problems.push(`主覆盖数 ${mainEmitted.length} != 计划 ${plan.events.length}`);
-for (const n of planSet) if (!mainEmitted.includes(n)) problems.push(`缺失事件 ${n}`);
+// `_Q` 是 CS2 独有的「安静版」工艺音事件：主事件已覆盖时必须一并覆盖，
+// 否则引擎在快速动作场景下仍播 CS2 原音（详见 build_legacy_all.js 3a-2 段注释）。
+const qEmitted = mainEmitted.filter((e) => /_Q$/.test(e));
+const baseEmitted = mainEmitted.filter((e) => !/_Q$/.test(e));
+console.log(
+  `生成块: ${emitted.length}  主覆盖: ${baseEmitted.length}  _Q: ${qEmitted.length}  Orig_: ${emitted.length - mainEmitted.length}`
+);
+if (baseEmitted.length !== plan.events.length) problems.push(`主覆盖数 ${baseEmitted.length} != 计划 ${plan.events.length}`);
+for (const n of planSet) if (!baseEmitted.includes(n)) problems.push(`缺失事件 ${n}`);
+// `_Q` 必须成对：主事件被覆盖的，_Q 也必须被覆盖
+for (const q of emitted) {
+  if (!/_Q$/.test(q)) continue;
+  const base = q.replace(/_Q$/, '');
+  if (planSet.has(base) && !emitted.includes(q)) problems.push(`${base} 已覆盖但缺少 ${q}`);
+}
 
 // 2) 每个块都有 vsnd
 for (const n of emitted) {
@@ -64,7 +77,7 @@ for (const n of emitted) {
   if (!v.length) problems.push(`${n} 无 vsnd`);
 }
 
-// 3) 变体数与 CS2 对齐
+// 3) 变体数与 CS2 对齐（含 _Q，它们同样要对齐变体池大小）
 for (const n of mainEmitted) {
   const cb = block(n, g);
   const ob = block(n, S);
