@@ -26,6 +26,7 @@ let csgoVolumePath = null;
 let loudnessPath = null;
 let wavDir = null;
 let gainsPath = null;
+let excludePath = null;
 const positional = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--gains') { gainsPath = argv[++i]; continue; }
@@ -36,6 +37,8 @@ for (let i = 0; i < argv.length; i++) {
   if (argv[i].startsWith('--loudness=')) { loudnessPath = argv[i].split('=')[1]; continue; }
   if (argv[i] === '--wav-dir') { wavDir = argv[++i]; continue; }
   if (argv[i].startsWith('--wav-dir=')) { wavDir = argv[i].split('=')[1]; continue; }
+  if (argv[i] === '--exclude') { excludePath = argv[++i]; continue; }
+  if (argv[i].startsWith('--exclude=')) { excludePath = argv[i].split('=')[1]; continue; }
   positional.push(argv[i]);
 }
 const [gswPath, planPath, outPath] = positional;

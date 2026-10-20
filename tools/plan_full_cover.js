@@ -2,6 +2,26 @@
 // 输出兼容 build_legacy_all.js 的 plan JSON
 const fs = require('fs');
 
+// ---------------------------------------------------------------------------
+// 刻意不覆盖的事件：这些事件在 CS2 里的变体数比 CS:GO 多，套用旧音只能靠
+// 「截断/循环重复」，听感收益为零却增加出错面 —— 直接保留 CS2 原音。
+//
+// 判定依据（2026-10-20 用户决定）：CS:GO 变体数 > CS2 变体数的 6 个事件。
+// 其余事件的变体关系是「CS:GO ≤ CS2」，循环填充不会丢素材，不属于这一类。
+// 从 CSV 层面排除后：这些事件不进 events（不生成覆盖块）、
+// 若其中有 .Single 也不会进 legacyEvents（不生成 Orig_ 回退块）；
+// 因为没有 Orig_ 块，插件关闭旧音时 emit 得到 guid=0 → Continue 播原版，
+// CS2 原音与原来完全一致，功能不受影响。
+// ---------------------------------------------------------------------------
+const KEEP_CS2_EVENTS = new Set([
+  'Weapon_GalilAR.Single',        // CS2 1 个 vs CS:GO 4 个
+  'Weapon_Glock.Single',          // CS2 1 个 vs CS:GO 2 个
+  'Weapon_FAMAS.Single',          // CS2 3 个 vs CS:GO 4 个
+  'Weapon_MP7.Single',            // CS2 3 个 vs CS:GO 4 个
+  'Weapon_Sawedoff.Insertshell',  // CS2 2 个 vs CS:GO 4 个
+  'Weapon_SCAR20.SingleDistant',  // CS2 1 个 vs CS:GO 3 个
+]);
+
 const gsw = fs.readFileSync(process.argv[2] || 'data/gsw.txt', 'utf8').split(/\r?\n/);
 const csgoAll = JSON.parse(fs.readFileSync('data/csgo_ref/csgo_events.json', 'utf8')).events;
 
@@ -27,8 +47,9 @@ function usesTrack(name) {
 
 const targets = [];
 const wavSet = new Set();
-let skippedNoTrack = [], skippedNoCsgo = 0, skippedNoWave = 0;
+let skippedNoTrack = [], skippedNoCsgo = 0, skippedNoWave = 0, skippedKeepCs2 = [];
 for (const name of blockStart.keys()) {
+  if (KEEP_CS2_EVENTS.has(name)) { skippedKeepCs2.push(name); continue; }
   const c = csgoAll[name];
   if (!c || !c.waves || !c.waves.length) { skippedNoCsgo++; continue; }
   if (!usesTrack(name)) { skippedNoTrack.push(name); continue; }
@@ -47,8 +68,18 @@ for (const name of blockStart.keys()) {
 const wavs = [...wavSet].sort();
 console.log(`目标事件: ${targets.length}`);
 console.log(`唯一 wav: ${wavs.length}`);
-console.log(`跳过: 无 vsnd_files_track(${skippedNoTrack.length}) 无CSGO事件(${skippedNoCsgo}) 无wav(${skippedNoWave})`);
+console.log(`跳过: 无 vsnd_files_track(${skippedNoTrack.length}) 无CSGO事件(${skippedNoCsgo}) 无wav(${skippedNoWave}) 刻意保留CS2音(${skippedKeepCs2.length})`);
 if (skippedNoTrack.length) console.log('  非track字段事件: ' + skippedNoTrack.join(', '));
+if (skippedKeepCs2.length) console.log('  刻意保留 CS2 原音: ' + skippedKeepCs2.join(', '));
+
+// 硬校验：KEEP_CS2_EVENTS 里的每一项都必须真的被这份 gsw.txt 命中，
+// 否则说明事件名拼错了 / 游戏更新改了名字 —— 直接报错，不静默放过。
+const notFound = [...KEEP_CS2_EVENTS].filter((e) => !blockStart.has(e));
+if (notFound.length) {
+  console.error('!! KEEP_CS2_EVENTS 里这些事件在 gsw.txt 中不存在（拼写错误或游戏已改名）:');
+  for (const e of notFound) console.error('   ' + e);
+  process.exit(1);
+}
 
 // 本地已有 wav 统计
 let have = 0, miss = [];
@@ -65,14 +96,16 @@ const legacyEvents = targets.filter((t) => /\.Single$/.test(t.event)).map((t) =>
 console.log(`Single 事件（Orig_ 回退用）: ${legacyEvents.length}`);
 
 const plan = {
-  _说明: '全量覆盖：CS:GO 有对应 wav 的事件全部替换，音量保留 CS2 原值',
+  _说明: '全量覆盖：CS:GO 有对应 wav 的事件全部替换；KEEP_CS2_EVENTS 里的刻意保留 CS2 原音',
   stats: {
     targets: targets.length,
     unique_wavs: wavs.length,
     legacy_singles: legacyEvents.length,
     skipped_no_track: skippedNoTrack.length,
     skipped_no_csgo: skippedNoCsgo,
+    skipped_keep_cs2: skippedKeepCs2.length,
   },
+  keep_cs2: skippedKeepCs2,
   events: targets,
   legacyEvents,
   origBlocks: legacyEvents,

@@ -63,6 +63,13 @@ console.log(
 );
 if (baseEmitted.length !== plan.events.length) problems.push(`主覆盖数 ${baseEmitted.length} != 计划 ${plan.events.length}`);
 for (const n of planSet) if (!baseEmitted.includes(n)) problems.push(`缺失事件 ${n}`);
+// plan.keep_cs2 里的事件必须「既不覆盖、也不生成 Orig_ 回退块」——
+// 这些事件刻意保留 CS2 原音（变体数与 CS:GO 不兼容，套旧音只能截断/循环重复）。
+// 少生成 Orig_ 是安全的：插件 enabled=false 时 EmitSound 返回 guid=0 → 保留原版。
+for (const n of plan.keep_cs2 || []) {
+  if (emitted.includes(n)) problems.push(`${n} 在 keep_cs2 里却仍被覆盖`);
+  if (emitted.includes('Orig_' + n)) problems.push(`${n} 在 keep_cs2 里却仍生成了 Orig_ 回退块`);
+}
 // `_Q` 必须成对：主事件被覆盖的，_Q 也必须被覆盖
 for (const q of emitted) {
   if (!/_Q$/.test(q)) continue;
