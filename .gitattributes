@@ -1,0 +1,12 @@
+# 这些文件由脚本生成并用 resourcecompiler 编译，必须是 LF 换行，
+# 否则 checkout 后与生成产物不一致（哈希校验会失败）。
+*.vsndevts  text eol=lf
+*.sh         text eol=lf
+*.js         text eol=lf
+*.py         text eol=lf
+
+*.dll        binary
+*.pdb        binary
+*.png        binary
+*.jpg        binary
+*.zip        binary
