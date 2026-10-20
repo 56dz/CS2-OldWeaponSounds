@@ -79,7 +79,7 @@ public class RootCfg
 public class OldWeaponSoundsPlugin : BasePlugin
 {
     public override string ModuleName => "OldWeaponSounds";
-    public override string ModuleVersion => "2.0.0";
+    public override string ModuleVersion => "2.1.0";
     public override string ModuleAuthor => "dsh";
     public override string ModuleDescription => "CS:GO 旧版枪声 addon 的每武器开关（把指定武器还原成 CS2 原声）";
 
@@ -118,7 +118,7 @@ public class OldWeaponSoundsPlugin : BasePlugin
         _cfgPath = ResolveConfigPath();
         RotateLog();
 
-        Log($"=== OldWeaponSounds v2.0 加载 (hotReload={hotReload}) ===");
+        Log($"=== OldWeaponSounds v2.1 加载 (hotReload={hotReload}) ===");
         LoadConfig();
 
         HookUserMessage(MsgWeaponFireSound, OnWeaponFireSound, HookMode.Pre);
